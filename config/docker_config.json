@@ -1,0 +1,8 @@
+{
+    "SAMPLES_DIR": "samples",
+    "IDA_SAMPLES_DIR": "ida_samples",
+    "GHIDRA_OUTPUT": "output",
+    "GHIDRA_PATH": "/opt/ghidra/",
+    "GHIDRA_SCRIPT": "/opt/ghidra_plugins",
+    "GHIDRA_PROJECT": "/opt/ghidra_projects"
+}

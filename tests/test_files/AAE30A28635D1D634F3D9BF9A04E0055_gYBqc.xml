@@ -1,0 +1,884 @@
+<?xml version="1.0" standalone="yes"?>
+<?program_dtd version="1"?>
+
+<PROGRAM NAME="a.out" EXE_PATH="C:\Users\IEUser\Desktop\a.out" EXE_FORMAT="ELF64 for x86-64 (Shared object)" INPUT_MD5="AAE30A28635D1D634F3D9BF9A04E0055">
+    <INFO_SOURCE TOOL="IDA-Pro 7.2 XML plugin v5.0.1 (Python) SDK 720" USER="IEUser" FILE="C:\Users\IEUser\Desktop\a.out.i64" TIMESTAMP="2019-08-27 08:03" />
+    <PROCESSOR NAME="metapc" ENDIAN="little" ADDRESS_MODEL="64-bit" />
+    <COMPILER NAME="gcc" />
+    <DATATYPES>
+        <STRUCTURE NAME="Elf64_Sym" SIZE="0x18">
+            <MEMBER OFFSET="0x0" NAME="st_name" DATATYPE="pointer" SIZE="0x4" />
+            <MEMBER OFFSET="0x4" NAME="st_info" DATATYPE="byte" SIZE="0x1" />
+            <MEMBER OFFSET="0x5" NAME="st_other" DATATYPE="byte" SIZE="0x1" />
+            <MEMBER OFFSET="0x6" NAME="st_shndx" DATATYPE="word" SIZE="0x2" />
+            <MEMBER OFFSET="0x8" NAME="st_value" DATATYPE="pointer" SIZE="0x8" />
+            <MEMBER OFFSET="0x10" NAME="st_size" DATATYPE="qword" SIZE="0x8" />
+        </STRUCTURE>
+        <STRUCTURE NAME="Elf64_Rela" SIZE="0x18">
+            <MEMBER OFFSET="0x0" NAME="r_offset" DATATYPE="qword" SIZE="0x8" />
+            <MEMBER OFFSET="0x8" NAME="r_info" DATATYPE="qword" SIZE="0x8" />
+            <MEMBER OFFSET="0x10" NAME="r_addend" DATATYPE="qword" SIZE="0x8" />
+        </STRUCTURE>
+        <STRUCTURE NAME="Elf64_Dyn" SIZE="0x10">
+            <MEMBER OFFSET="0x0" NAME="d_tag" DATATYPE="qword" SIZE="0x8" />
+            <MEMBER OFFSET="0x8" NAME="d_un" DATATYPE="qword" SIZE="0x8" />
+        </STRUCTURE>
+        <STRUCTURE NAME="Elf64_Verneed" SIZE="0x10">
+            <MEMBER OFFSET="0x0" NAME="vn_version" DATATYPE="word" SIZE="0x2" />
+            <MEMBER OFFSET="0x2" NAME="vn_cnt" DATATYPE="word" SIZE="0x2" />
+            <MEMBER OFFSET="0x4" NAME="vn_file" DATATYPE="pointer" SIZE="0x4" />
+            <MEMBER OFFSET="0x8" NAME="vn_aux" DATATYPE="dword" SIZE="0x4" />
+            <MEMBER OFFSET="0xC" NAME="vn_next" DATATYPE="dword" SIZE="0x4" />
+        </STRUCTURE>
+        <STRUCTURE NAME="Elf64_Vernaux" SIZE="0x10">
+            <MEMBER OFFSET="0x0" NAME="vna_hash" DATATYPE="dword" SIZE="0x4" />
+            <MEMBER OFFSET="0x4" NAME="vna_flags" DATATYPE="word" SIZE="0x2" />
+            <MEMBER OFFSET="0x6" NAME="vna_other" DATATYPE="word" SIZE="0x2" />
+            <MEMBER OFFSET="0x8" NAME="vna_name" DATATYPE="pointer" SIZE="0x4" />
+            <MEMBER OFFSET="0xC" NAME="vna_next" DATATYPE="dword" SIZE="0x4" />
+        </STRUCTURE>
+    </DATATYPES>
+    <MEMORY_MAP>
+        <MEMORY_SECTION NAME="LOAD" START_ADDR="0x0" LENGTH="0x658" PERMISSIONS="r">
+            <MEMORY_CONTENTS START_ADDR="0x0" FILE_NAME="AAE30A28635D1D634F3D9BF9A04E0055_gYBqc.bytes" FILE_OFFSET="0x0" LENGTH="0x658" />
+        </MEMORY_SECTION>
+        <MEMORY_SECTION NAME=".init" START_ADDR="0x1000" LENGTH="0x17" PERMISSIONS="rx">
+            <MEMORY_CONTENTS START_ADDR="0x1000" FILE_NAME="AAE30A28635D1D634F3D9BF9A04E0055_gYBqc.bytes" FILE_OFFSET="0x658" LENGTH="0x17" />
+        </MEMORY_SECTION>
+        <MEMORY_SECTION NAME="LOAD" START_ADDR="0x1017" LENGTH="0x9" PERMISSIONS="rx">
+            <MEMORY_CONTENTS START_ADDR="0x1017" FILE_NAME="AAE30A28635D1D634F3D9BF9A04E0055_gYBqc.bytes" FILE_OFFSET="0x66F" LENGTH="0x9" />
+        </MEMORY_SECTION>
+        <MEMORY_SECTION NAME=".plt" START_ADDR="0x1020" LENGTH="0x50" PERMISSIONS="rx">
+            <MEMORY_CONTENTS START_ADDR="0x1020" FILE_NAME="AAE30A28635D1D634F3D9BF9A04E0055_gYBqc.bytes" FILE_OFFSET="0x678" LENGTH="0x50" />
+        </MEMORY_SECTION>
+        <MEMORY_SECTION NAME=".plt.got" START_ADDR="0x1070" LENGTH="0x8" PERMISSIONS="rx">
+            <MEMORY_CONTENTS START_ADDR="0x1070" FILE_NAME="AAE30A28635D1D634F3D9BF9A04E0055_gYBqc.bytes" FILE_OFFSET="0x6C8" LENGTH="0x8" />
+        </MEMORY_SECTION>
+        <MEMORY_SECTION NAME="LOAD" START_ADDR="0x1078" LENGTH="0x8" PERMISSIONS="rx">
+            <MEMORY_CONTENTS START_ADDR="0x1078" FILE_NAME="AAE30A28635D1D634F3D9BF9A04E0055_gYBqc.bytes" FILE_OFFSET="0x6D0" LENGTH="0x8" />
+        </MEMORY_SECTION>
+        <MEMORY_SECTION NAME=".text" START_ADDR="0x1080" LENGTH="0x1D1" PERMISSIONS="rx">
+            <MEMORY_CONTENTS START_ADDR="0x1080" FILE_NAME="AAE30A28635D1D634F3D9BF9A04E0055_gYBqc.bytes" FILE_OFFSET="0x6D8" LENGTH="0x1D1" />
+        </MEMORY_SECTION>
+        <MEMORY_SECTION NAME="LOAD" START_ADDR="0x1251" LENGTH="0x3" PERMISSIONS="rx">
+            <MEMORY_CONTENTS START_ADDR="0x1251" FILE_NAME="AAE30A28635D1D634F3D9BF9A04E0055_gYBqc.bytes" FILE_OFFSET="0x8A9" LENGTH="0x3" />
+        </MEMORY_SECTION>
+        <MEMORY_SECTION NAME=".fini" START_ADDR="0x1254" LENGTH="0x9" PERMISSIONS="rx">
+            <MEMORY_CONTENTS START_ADDR="0x1254" FILE_NAME="AAE30A28635D1D634F3D9BF9A04E0055_gYBqc.bytes" FILE_OFFSET="0x8AC" LENGTH="0x9" />
+        </MEMORY_SECTION>
+        <MEMORY_SECTION NAME=".rodata" START_ADDR="0x2000" LENGTH="0x6C" PERMISSIONS="r">
+            <MEMORY_CONTENTS START_ADDR="0x2000" FILE_NAME="AAE30A28635D1D634F3D9BF9A04E0055_gYBqc.bytes" FILE_OFFSET="0x8B5" LENGTH="0x6C" />
+        </MEMORY_SECTION>
+        <MEMORY_SECTION NAME=".eh_frame_hdr" START_ADDR="0x206C" LENGTH="0x3C" PERMISSIONS="r" />
+        <MEMORY_SECTION NAME=".eh_frame" START_ADDR="0x20A8" LENGTH="0x108" PERMISSIONS="r" />
+        <MEMORY_SECTION NAME=".init_array" START_ADDR="0x3DA0" LENGTH="0x8" PERMISSIONS="rw">
+            <MEMORY_CONTENTS START_ADDR="0x3DA0" FILE_NAME="AAE30A28635D1D634F3D9BF9A04E0055_gYBqc.bytes" FILE_OFFSET="0x921" LENGTH="0x8" />
+        </MEMORY_SECTION>
+        <MEMORY_SECTION NAME=".fini_array" START_ADDR="0x3DA8" LENGTH="0x8" PERMISSIONS="rw">
+            <MEMORY_CONTENTS START_ADDR="0x3DA8" FILE_NAME="AAE30A28635D1D634F3D9BF9A04E0055_gYBqc.bytes" FILE_OFFSET="0x929" LENGTH="0x8" />
+        </MEMORY_SECTION>
+        <MEMORY_SECTION NAME="LOAD" START_ADDR="0x3DB0" LENGTH="0x1F0" PERMISSIONS="rw">
+            <MEMORY_CONTENTS START_ADDR="0x3DB0" FILE_NAME="AAE30A28635D1D634F3D9BF9A04E0055_gYBqc.bytes" FILE_OFFSET="0x931" LENGTH="0x1F0" />
+        </MEMORY_SECTION>
+        <MEMORY_SECTION NAME=".got" START_ADDR="0x3FA0" LENGTH="0x60" PERMISSIONS="rw">
+            <MEMORY_CONTENTS START_ADDR="0x3FA0" FILE_NAME="AAE30A28635D1D634F3D9BF9A04E0055_gYBqc.bytes" FILE_OFFSET="0xB21" LENGTH="0x60" />
+        </MEMORY_SECTION>
+        <MEMORY_SECTION NAME=".data" START_ADDR="0x4000" LENGTH="0x10" PERMISSIONS="rw">
+            <MEMORY_CONTENTS START_ADDR="0x4000" FILE_NAME="AAE30A28635D1D634F3D9BF9A04E0055_gYBqc.bytes" FILE_OFFSET="0xB81" LENGTH="0x10" />
+        </MEMORY_SECTION>
+        <MEMORY_SECTION NAME=".bss" START_ADDR="0x4010" LENGTH="0x8" PERMISSIONS="rw" />
+        <MEMORY_SECTION NAME=".prgend" START_ADDR="0x4018" LENGTH="0x1" />
+        <MEMORY_SECTION NAME="extern" START_ADDR="0x4020" LENGTH="0x48">
+            <MEMORY_CONTENTS START_ADDR="0x4020" FILE_NAME="AAE30A28635D1D634F3D9BF9A04E0055_gYBqc.bytes" FILE_OFFSET="0xB91" LENGTH="0x48" />
+        </MEMORY_SECTION>
+    </MEMORY_MAP>
+    <REGISTER_VALUES>
+        <REGISTER_VALUE_RANGE REGISTER="es" VALUE="0x0" START_ADDRESS="0x0" LENGTH="0x658" />
+        <REGISTER_VALUE_RANGE REGISTER="es" VALUE="0x0" START_ADDRESS="0x1017" LENGTH="0x9" />
+        <REGISTER_VALUE_RANGE REGISTER="es" VALUE="0x0" START_ADDRESS="0x1078" LENGTH="0x8" />
+        <REGISTER_VALUE_RANGE REGISTER="es" VALUE="0x0" START_ADDRESS="0x1251" LENGTH="0x3" />
+        <REGISTER_VALUE_RANGE REGISTER="es" VALUE="0x0" START_ADDRESS="0x3DB0" LENGTH="0x1F0" />
+        <REGISTER_VALUE_RANGE REGISTER="ss" VALUE="0x0" START_ADDRESS="0x0" LENGTH="0x658" />
+        <REGISTER_VALUE_RANGE REGISTER="ss" VALUE="0x0" START_ADDRESS="0x1017" LENGTH="0x9" />
+        <REGISTER_VALUE_RANGE REGISTER="ss" VALUE="0x0" START_ADDRESS="0x1078" LENGTH="0x8" />
+        <REGISTER_VALUE_RANGE REGISTER="ss" VALUE="0x0" START_ADDRESS="0x1251" LENGTH="0x3" />
+        <REGISTER_VALUE_RANGE REGISTER="ss" VALUE="0x0" START_ADDRESS="0x3DB0" LENGTH="0x1F0" />
+        <REGISTER_VALUE_RANGE REGISTER="ds" VALUE="0x11" START_ADDRESS="0x0" LENGTH="0x658" />
+        <REGISTER_VALUE_RANGE REGISTER="ds" VALUE="0x11" START_ADDRESS="0x1000" LENGTH="0x17" />
+        <REGISTER_VALUE_RANGE REGISTER="ds" VALUE="0x11" START_ADDRESS="0x1017" LENGTH="0x9" />
+        <REGISTER_VALUE_RANGE REGISTER="ds" VALUE="0x11" START_ADDRESS="0x1020" LENGTH="0x50" />
+        <REGISTER_VALUE_RANGE REGISTER="ds" VALUE="0x11" START_ADDRESS="0x1070" LENGTH="0x8" />
+        <REGISTER_VALUE_RANGE REGISTER="ds" VALUE="0x11" START_ADDRESS="0x1078" LENGTH="0x8" />
+        <REGISTER_VALUE_RANGE REGISTER="ds" VALUE="0x11" START_ADDRESS="0x1080" LENGTH="0x1D1" />
+        <REGISTER_VALUE_RANGE REGISTER="ds" VALUE="0x11" START_ADDRESS="0x1251" LENGTH="0x3" />
+        <REGISTER_VALUE_RANGE REGISTER="ds" VALUE="0x11" START_ADDRESS="0x1254" LENGTH="0x9" />
+        <REGISTER_VALUE_RANGE REGISTER="ds" VALUE="0x11" START_ADDRESS="0x2000" LENGTH="0x6C" />
+        <REGISTER_VALUE_RANGE REGISTER="ds" VALUE="0x11" START_ADDRESS="0x206C" LENGTH="0x3C" />
+        <REGISTER_VALUE_RANGE REGISTER="ds" VALUE="0x11" START_ADDRESS="0x20A8" LENGTH="0x108" />
+        <REGISTER_VALUE_RANGE REGISTER="ds" VALUE="0x11" START_ADDRESS="0x3DA0" LENGTH="0x8" />
+        <REGISTER_VALUE_RANGE REGISTER="ds" VALUE="0x11" START_ADDRESS="0x3DA8" LENGTH="0x8" />
+        <REGISTER_VALUE_RANGE REGISTER="ds" VALUE="0x11" START_ADDRESS="0x3DB0" LENGTH="0x1F0" />
+        <REGISTER_VALUE_RANGE REGISTER="ds" VALUE="0x11" START_ADDRESS="0x3FA0" LENGTH="0x60" />
+        <REGISTER_VALUE_RANGE REGISTER="ds" VALUE="0x11" START_ADDRESS="0x4000" LENGTH="0x10" />
+        <REGISTER_VALUE_RANGE REGISTER="ds" VALUE="0x11" START_ADDRESS="0x4010" LENGTH="0x8" />
+        <REGISTER_VALUE_RANGE REGISTER="fs" VALUE="0x0" START_ADDRESS="0x0" LENGTH="0x658" />
+        <REGISTER_VALUE_RANGE REGISTER="fs" VALUE="0x0" START_ADDRESS="0x1017" LENGTH="0x9" />
+        <REGISTER_VALUE_RANGE REGISTER="fs" VALUE="0x0" START_ADDRESS="0x1078" LENGTH="0x8" />
+        <REGISTER_VALUE_RANGE REGISTER="fs" VALUE="0x0" START_ADDRESS="0x1251" LENGTH="0x3" />
+        <REGISTER_VALUE_RANGE REGISTER="fs" VALUE="0x0" START_ADDRESS="0x3DB0" LENGTH="0x1F0" />
+        <REGISTER_VALUE_RANGE REGISTER="gs" VALUE="0x0" START_ADDRESS="0x0" LENGTH="0x658" />
+        <REGISTER_VALUE_RANGE REGISTER="gs" VALUE="0x0" START_ADDRESS="0x1017" LENGTH="0x9" />
+        <REGISTER_VALUE_RANGE REGISTER="gs" VALUE="0x0" START_ADDRESS="0x1078" LENGTH="0x8" />
+        <REGISTER_VALUE_RANGE REGISTER="gs" VALUE="0x0" START_ADDRESS="0x1251" LENGTH="0x3" />
+        <REGISTER_VALUE_RANGE REGISTER="gs" VALUE="0x0" START_ADDRESS="0x3DB0" LENGTH="0x1F0" />
+    </REGISTER_VALUES>
+    <CODE>
+        <CODE_BLOCK START="0x1000" END="0x1016" />
+        <CODE_BLOCK START="0x1020" END="0x102B" />
+        <CODE_BLOCK START="0x1030" END="0x106F" />
+        <CODE_BLOCK START="0x1070" END="0x1075" />
+        <CODE_BLOCK START="0x1080" END="0x10AA" />
+        <CODE_BLOCK START="0x10B0" END="0x10D0" />
+        <CODE_BLOCK START="0x10D8" END="0x10D8" />
+        <CODE_BLOCK START="0x10E0" END="0x1111" />
+        <CODE_BLOCK START="0x1118" END="0x1118" />
+        <CODE_BLOCK START="0x1120" END="0x1150" />
+        <CODE_BLOCK START="0x1158" END="0x1158" />
+        <CODE_BLOCK START="0x1160" END="0x11ED" />
+        <CODE_BLOCK START="0x11F0" END="0x124C" />
+        <CODE_BLOCK START="0x1250" END="0x1250" />
+        <CODE_BLOCK START="0x1254" END="0x125C" />
+        <CODE_BLOCK START="0x4020" END="0x404F" />
+        <CODE_BLOCK START="0x4058" END="0x405F" />
+    </CODE>
+    <DATA>
+        <DEFINED_DATA ADDRESS="0x0" DATATYPE="dword" SIZE="0x4">
+            <TYPEINFO_CMT>dword_0</TYPEINFO_CMT>
+        </DEFINED_DATA>
+        <DEFINED_DATA ADDRESS="0x4" DATATYPE="byte" SIZE="0x1" />
+        <DEFINED_DATA ADDRESS="0x5" DATATYPE="byte" SIZE="0x1" />
+        <DEFINED_DATA ADDRESS="0x6" DATATYPE="byte" SIZE="0x1" />
+        <DEFINED_DATA ADDRESS="0x7" DATATYPE="byte" SIZE="0x1" />
+        <DEFINED_DATA ADDRESS="0x8" DATATYPE="byte" SIZE="0x1" />
+        <DEFINED_DATA ADDRESS="0x9" DATATYPE="byte[7]" SIZE="0x7" />
+        <DEFINED_DATA ADDRESS="0x10" DATATYPE="word" SIZE="0x2" />
+        <DEFINED_DATA ADDRESS="0x12" DATATYPE="word" SIZE="0x2" />
+        <DEFINED_DATA ADDRESS="0x14" DATATYPE="dword" SIZE="0x4" />
+        <DEFINED_DATA ADDRESS="0x18" DATATYPE="pointer" SIZE="0x8" />
+        <DEFINED_DATA ADDRESS="0x20" DATATYPE="qword" SIZE="0x8" />
+        <DEFINED_DATA ADDRESS="0x28" DATATYPE="qword" SIZE="0x8" />
+        <DEFINED_DATA ADDRESS="0x30" DATATYPE="dword" SIZE="0x4" />
+        <DEFINED_DATA ADDRESS="0x34" DATATYPE="word" SIZE="0x2" />
+        <DEFINED_DATA ADDRESS="0x36" DATATYPE="word" SIZE="0x2" />
+        <DEFINED_DATA ADDRESS="0x38" DATATYPE="word" SIZE="0x2" />
+        <DEFINED_DATA ADDRESS="0x3A" DATATYPE="word" SIZE="0x2" />
+        <DEFINED_DATA ADDRESS="0x3C" DATATYPE="word" SIZE="0x2" />
+        <DEFINED_DATA ADDRESS="0x3E" DATATYPE="word" SIZE="0x2" />
+        <DEFINED_DATA ADDRESS="0x40" DATATYPE="dword" SIZE="0x4">
+            <TYPEINFO_CMT>dword_40</TYPEINFO_CMT>
+        </DEFINED_DATA>
+        <DEFINED_DATA ADDRESS="0x44" DATATYPE="dword" SIZE="0x4" />
+        <DEFINED_DATA ADDRESS="0x48" DATATYPE="qword" SIZE="0x8" />
+        <DEFINED_DATA ADDRESS="0x50" DATATYPE="pointer" SIZE="0x8" />
+        <DEFINED_DATA ADDRESS="0x58" DATATYPE="qword" SIZE="0x8" />
+        <DEFINED_DATA ADDRESS="0x60" DATATYPE="qword" SIZE="0x8" />
+        <DEFINED_DATA ADDRESS="0x68" DATATYPE="qword" SIZE="0x8" />
+        <DEFINED_DATA ADDRESS="0x70" DATATYPE="qword" SIZE="0x8" />
+        <DEFINED_DATA ADDRESS="0x78" DATATYPE="dword" SIZE="0x4" />
+        <DEFINED_DATA ADDRESS="0x7C" DATATYPE="dword" SIZE="0x4" />
+        <DEFINED_DATA ADDRESS="0x80" DATATYPE="qword" SIZE="0x8" />
+        <DEFINED_DATA ADDRESS="0x88" DATATYPE="pointer" SIZE="0x8" />
+        <DEFINED_DATA ADDRESS="0x90" DATATYPE="qword" SIZE="0x8" />
+        <DEFINED_DATA ADDRESS="0x98" DATATYPE="qword" SIZE="0x8" />
+        <DEFINED_DATA ADDRESS="0xA0" DATATYPE="qword" SIZE="0x8" />
+        <DEFINED_DATA ADDRESS="0xA8" DATATYPE="qword" SIZE="0x8" />
+        <DEFINED_DATA ADDRESS="0xB0" DATATYPE="dword" SIZE="0x4" />
+        <DEFINED_DATA ADDRESS="0xB4" DATATYPE="dword" SIZE="0x4" />
+        <DEFINED_DATA ADDRESS="0xB8" DATATYPE="qword" SIZE="0x8" />
+        <DEFINED_DATA ADDRESS="0xC0" DATATYPE="qword" SIZE="0x8" />
+        <DEFINED_DATA ADDRESS="0xC8" DATATYPE="qword" SIZE="0x8" />
+        <DEFINED_DATA ADDRESS="0xD0" DATATYPE="qword" SIZE="0x8" />
+        <DEFINED_DATA ADDRESS="0xD8" DATATYPE="qword" SIZE="0x8" />
+        <DEFINED_DATA ADDRESS="0xE0" DATATYPE="qword" SIZE="0x8" />
+        <DEFINED_DATA ADDRESS="0xE8" DATATYPE="dword" SIZE="0x4" />
+        <DEFINED_DATA ADDRESS="0xEC" DATATYPE="dword" SIZE="0x4" />
+        <DEFINED_DATA ADDRESS="0xF0" DATATYPE="qword" SIZE="0x8" />
+        <DEFINED_DATA ADDRESS="0xF8" DATATYPE="pointer" SIZE="0x8" />
+        <DEFINED_DATA ADDRESS="0x100" DATATYPE="qword" SIZE="0x8" />
+        <DEFINED_DATA ADDRESS="0x108" DATATYPE="qword" SIZE="0x8" />
+        <DEFINED_DATA ADDRESS="0x110" DATATYPE="qword" SIZE="0x8" />
+        <DEFINED_DATA ADDRESS="0x118" DATATYPE="qword" SIZE="0x8" />
+        <DEFINED_DATA ADDRESS="0x120" DATATYPE="dword" SIZE="0x4" />
+        <DEFINED_DATA ADDRESS="0x124" DATATYPE="dword" SIZE="0x4" />
+        <DEFINED_DATA ADDRESS="0x128" DATATYPE="qword" SIZE="0x8" />
+        <DEFINED_DATA ADDRESS="0x130" DATATYPE="pointer" SIZE="0x8" />
+        <DEFINED_DATA ADDRESS="0x138" DATATYPE="qword" SIZE="0x8" />
+        <DEFINED_DATA ADDRESS="0x140" DATATYPE="qword" SIZE="0x8" />
+        <DEFINED_DATA ADDRESS="0x148" DATATYPE="qword" SIZE="0x8" />
+        <DEFINED_DATA ADDRESS="0x150" DATATYPE="qword" SIZE="0x8" />
+        <DEFINED_DATA ADDRESS="0x158" DATATYPE="dword" SIZE="0x4" />
+        <DEFINED_DATA ADDRESS="0x15C" DATATYPE="dword" SIZE="0x4" />
+        <DEFINED_DATA ADDRESS="0x160" DATATYPE="qword" SIZE="0x8" />
+        <DEFINED_DATA ADDRESS="0x168" DATATYPE="pointer" SIZE="0x8" />
+        <DEFINED_DATA ADDRESS="0x170" DATATYPE="qword" SIZE="0x8" />
+        <DEFINED_DATA ADDRESS="0x178" DATATYPE="qword" SIZE="0x8" />
+        <DEFINED_DATA ADDRESS="0x180" DATATYPE="qword" SIZE="0x8" />
+        <DEFINED_DATA ADDRESS="0x188" DATATYPE="qword" SIZE="0x8" />
+        <DEFINED_DATA ADDRESS="0x190" DATATYPE="dword" SIZE="0x4" />
+        <DEFINED_DATA ADDRESS="0x194" DATATYPE="dword" SIZE="0x4" />
+        <DEFINED_DATA ADDRESS="0x198" DATATYPE="qword" SIZE="0x8" />
+        <DEFINED_DATA ADDRESS="0x1A0" DATATYPE="pointer" SIZE="0x8" />
+        <DEFINED_DATA ADDRESS="0x1A8" DATATYPE="qword" SIZE="0x8" />
+        <DEFINED_DATA ADDRESS="0x1B0" DATATYPE="qword" SIZE="0x8" />
+        <DEFINED_DATA ADDRESS="0x1B8" DATATYPE="qword" SIZE="0x8" />
+        <DEFINED_DATA ADDRESS="0x1C0" DATATYPE="qword" SIZE="0x8" />
+        <DEFINED_DATA ADDRESS="0x1C8" DATATYPE="dword" SIZE="0x4" />
+        <DEFINED_DATA ADDRESS="0x1CC" DATATYPE="dword" SIZE="0x4" />
+        <DEFINED_DATA ADDRESS="0x1D0" DATATYPE="qword" SIZE="0x8" />
+        <DEFINED_DATA ADDRESS="0x1D8" DATATYPE="pointer" SIZE="0x8" />
+        <DEFINED_DATA ADDRESS="0x1E0" DATATYPE="qword" SIZE="0x8" />
+        <DEFINED_DATA ADDRESS="0x1E8" DATATYPE="qword" SIZE="0x8" />
+        <DEFINED_DATA ADDRESS="0x1F0" DATATYPE="qword" SIZE="0x8" />
+        <DEFINED_DATA ADDRESS="0x1F8" DATATYPE="qword" SIZE="0x8" />
+        <DEFINED_DATA ADDRESS="0x200" DATATYPE="dword" SIZE="0x4" />
+        <DEFINED_DATA ADDRESS="0x204" DATATYPE="dword" SIZE="0x4" />
+        <DEFINED_DATA ADDRESS="0x208" DATATYPE="qword" SIZE="0x8" />
+        <DEFINED_DATA ADDRESS="0x210" DATATYPE="pointer" SIZE="0x8" />
+        <DEFINED_DATA ADDRESS="0x218" DATATYPE="qword" SIZE="0x8" />
+        <DEFINED_DATA ADDRESS="0x220" DATATYPE="qword" SIZE="0x8" />
+        <DEFINED_DATA ADDRESS="0x228" DATATYPE="qword" SIZE="0x8" />
+        <DEFINED_DATA ADDRESS="0x230" DATATYPE="qword" SIZE="0x8" />
+        <DEFINED_DATA ADDRESS="0x238" DATATYPE="dword" SIZE="0x4" />
+        <DEFINED_DATA ADDRESS="0x23C" DATATYPE="dword" SIZE="0x4" />
+        <DEFINED_DATA ADDRESS="0x240" DATATYPE="qword" SIZE="0x8" />
+        <DEFINED_DATA ADDRESS="0x248" DATATYPE="qword" SIZE="0x8" />
+        <DEFINED_DATA ADDRESS="0x250" DATATYPE="qword" SIZE="0x8" />
+        <DEFINED_DATA ADDRESS="0x258" DATATYPE="qword" SIZE="0x8" />
+        <DEFINED_DATA ADDRESS="0x260" DATATYPE="qword" SIZE="0x8" />
+        <DEFINED_DATA ADDRESS="0x268" DATATYPE="qword" SIZE="0x8" />
+        <DEFINED_DATA ADDRESS="0x270" DATATYPE="dword" SIZE="0x4" />
+        <DEFINED_DATA ADDRESS="0x274" DATATYPE="dword" SIZE="0x4" />
+        <DEFINED_DATA ADDRESS="0x278" DATATYPE="qword" SIZE="0x8" />
+        <DEFINED_DATA ADDRESS="0x280" DATATYPE="pointer" SIZE="0x8" />
+        <DEFINED_DATA ADDRESS="0x288" DATATYPE="qword" SIZE="0x8" />
+        <DEFINED_DATA ADDRESS="0x290" DATATYPE="qword" SIZE="0x8" />
+        <DEFINED_DATA ADDRESS="0x298" DATATYPE="qword" SIZE="0x8" />
+        <DEFINED_DATA ADDRESS="0x2A0" DATATYPE="qword" SIZE="0x8" />
+        <DEFINED_DATA ADDRESS="0x2A8" DATATYPE="string" SIZE="0x1C">
+            <TYPEINFO_CMT>aLib64LdLinuxX8</TYPEINFO_CMT>
+        </DEFINED_DATA>
+        <DEFINED_DATA ADDRESS="0x2C4" DATATYPE="dword" SIZE="0x4">
+            <TYPEINFO_CMT>dword_2C4</TYPEINFO_CMT>
+        </DEFINED_DATA>
+        <DEFINED_DATA ADDRESS="0x2C8" DATATYPE="dword" SIZE="0x4" />
+        <DEFINED_DATA ADDRESS="0x2CC" DATATYPE="dword" SIZE="0x4" />
+        <DEFINED_DATA ADDRESS="0x2D0" DATATYPE="string" SIZE="0x4">
+            <TYPEINFO_CMT>aGnu</TYPEINFO_CMT>
+        </DEFINED_DATA>
+        <DEFINED_DATA ADDRESS="0x2D4" DATATYPE="dword[4]" SIZE="0x10" />
+        <DEFINED_DATA ADDRESS="0x2E4" DATATYPE="dword" SIZE="0x4" />
+        <DEFINED_DATA ADDRESS="0x2E8" DATATYPE="dword" SIZE="0x4" />
+        <DEFINED_DATA ADDRESS="0x2EC" DATATYPE="dword" SIZE="0x4" />
+        <DEFINED_DATA ADDRESS="0x2F0" DATATYPE="string" SIZE="0x4">
+            <TYPEINFO_CMT>aGnu_0</TYPEINFO_CMT>
+        </DEFINED_DATA>
+        <DEFINED_DATA ADDRESS="0x2F4" DATATYPE="byte[20]" SIZE="0x14" />
+        <DEFINED_DATA ADDRESS="0x308" DATATYPE="dword" SIZE="0x4">
+            <TYPEINFO_CMT>elf_gnu_hash_nbuckets</TYPEINFO_CMT>
+        </DEFINED_DATA>
+        <DEFINED_DATA ADDRESS="0x30C" DATATYPE="dword" SIZE="0x4">
+            <TYPEINFO_CMT>elf_gnu_hash_symbias</TYPEINFO_CMT>
+        </DEFINED_DATA>
+        <DEFINED_DATA ADDRESS="0x310" DATATYPE="dword" SIZE="0x4">
+            <TYPEINFO_CMT>elf_gnu_hash_bitmask_nwords</TYPEINFO_CMT>
+        </DEFINED_DATA>
+        <DEFINED_DATA ADDRESS="0x314" DATATYPE="dword" SIZE="0x4">
+            <TYPEINFO_CMT>elf_gnu_hash_shift</TYPEINFO_CMT>
+        </DEFINED_DATA>
+        <DEFINED_DATA ADDRESS="0x318" DATATYPE="qword" SIZE="0x8">
+            <TYPEINFO_CMT>elf_gnu_hash_indexes</TYPEINFO_CMT>
+        </DEFINED_DATA>
+        <DEFINED_DATA ADDRESS="0x320" DATATYPE="dword[2]" SIZE="0x8">
+            <TYPEINFO_CMT>elf_gnu_hash_bucket</TYPEINFO_CMT>
+        </DEFINED_DATA>
+        <DEFINED_DATA ADDRESS="0x328" DATATYPE="dword[2]" SIZE="0x8">
+            <TYPEINFO_CMT>elf_gnu_hash_chain</TYPEINFO_CMT>
+        </DEFINED_DATA>
+        <DEFINED_DATA ADDRESS="0x330" DATATYPE="Elf64_Sym" SIZE="0x18" />
+        <DEFINED_DATA ADDRESS="0x348" DATATYPE="Elf64_Sym" SIZE="0x18" />
+        <DEFINED_DATA ADDRESS="0x360" DATATYPE="Elf64_Sym" SIZE="0x18" />
+        <DEFINED_DATA ADDRESS="0x378" DATATYPE="Elf64_Sym" SIZE="0x18" />
+        <DEFINED_DATA ADDRESS="0x390" DATATYPE="Elf64_Sym" SIZE="0x18" />
+        <DEFINED_DATA ADDRESS="0x3A8" DATATYPE="Elf64_Sym" SIZE="0x18" />
+        <DEFINED_DATA ADDRESS="0x3C0" DATATYPE="Elf64_Sym" SIZE="0x18" />
+        <DEFINED_DATA ADDRESS="0x3D8" DATATYPE="Elf64_Sym" SIZE="0x18" />
+        <DEFINED_DATA ADDRESS="0x3F0" DATATYPE="Elf64_Sym" SIZE="0x18" />
+        <DEFINED_DATA ADDRESS="0x408" DATATYPE="Elf64_Sym" SIZE="0x18" />
+        <DEFINED_DATA ADDRESS="0x421" DATATYPE="string" SIZE="0xA">
+            <TYPEINFO_CMT>aLibcSo6</TYPEINFO_CMT>
+        </DEFINED_DATA>
+        <DEFINED_DATA ADDRESS="0x42B" DATATYPE="string" SIZE="0xF">
+            <TYPEINFO_CMT>aIsoc99Scanf</TYPEINFO_CMT>
+        </DEFINED_DATA>
+        <DEFINED_DATA ADDRESS="0x43A" DATATYPE="string" SIZE="0x5">
+            <TYPEINFO_CMT>aPuts</TYPEINFO_CMT>
+        </DEFINED_DATA>
+        <DEFINED_DATA ADDRESS="0x43F" DATATYPE="string" SIZE="0x11">
+            <TYPEINFO_CMT>aStackChkFail</TYPEINFO_CMT>
+        </DEFINED_DATA>
+        <DEFINED_DATA ADDRESS="0x450" DATATYPE="string" SIZE="0x7">
+            <TYPEINFO_CMT>aPrintf</TYPEINFO_CMT>
+        </DEFINED_DATA>
+        <DEFINED_DATA ADDRESS="0x457" DATATYPE="string" SIZE="0xF">
+            <TYPEINFO_CMT>aCxaFinalize</TYPEINFO_CMT>
+        </DEFINED_DATA>
+        <DEFINED_DATA ADDRESS="0x466" DATATYPE="string" SIZE="0x12">
+            <TYPEINFO_CMT>aLibcStartMain</TYPEINFO_CMT>
+        </DEFINED_DATA>
+        <DEFINED_DATA ADDRESS="0x478" DATATYPE="string" SIZE="0xA">
+            <TYPEINFO_CMT>aGlibc27</TYPEINFO_CMT>
+        </DEFINED_DATA>
+        <DEFINED_DATA ADDRESS="0x482" DATATYPE="string" SIZE="0xA">
+            <TYPEINFO_CMT>aGlibc24</TYPEINFO_CMT>
+        </DEFINED_DATA>
+        <DEFINED_DATA ADDRESS="0x48C" DATATYPE="string" SIZE="0xC">
+            <TYPEINFO_CMT>aGlibc225</TYPEINFO_CMT>
+        </DEFINED_DATA>
+        <DEFINED_DATA ADDRESS="0x498" DATATYPE="string" SIZE="0x1C">
+            <TYPEINFO_CMT>aItmDeregistert</TYPEINFO_CMT>
+        </DEFINED_DATA>
+        <DEFINED_DATA ADDRESS="0x4B4" DATATYPE="string" SIZE="0xF">
+            <TYPEINFO_CMT>aGmonStart</TYPEINFO_CMT>
+        </DEFINED_DATA>
+        <DEFINED_DATA ADDRESS="0x4C3" DATATYPE="string" SIZE="0x1A">
+            <TYPEINFO_CMT>aItmRegistertmc</TYPEINFO_CMT>
+        </DEFINED_DATA>
+        <DEFINED_DATA ADDRESS="0x4DE" DATATYPE="word" SIZE="0x2" />
+        <DEFINED_DATA ADDRESS="0x4E0" DATATYPE="word" SIZE="0x2" />
+        <DEFINED_DATA ADDRESS="0x4E2" DATATYPE="word" SIZE="0x2" />
+        <DEFINED_DATA ADDRESS="0x4E4" DATATYPE="word" SIZE="0x2" />
+        <DEFINED_DATA ADDRESS="0x4E6" DATATYPE="word" SIZE="0x2" />
+        <DEFINED_DATA ADDRESS="0x4E8" DATATYPE="word" SIZE="0x2" />
+        <DEFINED_DATA ADDRESS="0x4EA" DATATYPE="word" SIZE="0x2" />
+        <DEFINED_DATA ADDRESS="0x4EC" DATATYPE="word" SIZE="0x2" />
+        <DEFINED_DATA ADDRESS="0x4EE" DATATYPE="word" SIZE="0x2" />
+        <DEFINED_DATA ADDRESS="0x4F0" DATATYPE="word" SIZE="0x2" />
+        <DEFINED_DATA ADDRESS="0x4F2" DATATYPE="word" SIZE="0x2" />
+        <DEFINED_DATA ADDRESS="0x4F4" DATATYPE="word" SIZE="0x2" />
+        <DEFINED_DATA ADDRESS="0x4F6" DATATYPE="word" SIZE="0x2" />
+        <DEFINED_DATA ADDRESS="0x4F8" DATATYPE="Elf64_Verneed" SIZE="0x10" />
+        <DEFINED_DATA ADDRESS="0x508" DATATYPE="Elf64_Vernaux" SIZE="0x10" />
+        <DEFINED_DATA ADDRESS="0x518" DATATYPE="Elf64_Vernaux" SIZE="0x10" />
+        <DEFINED_DATA ADDRESS="0x528" DATATYPE="Elf64_Vernaux" SIZE="0x10" />
+        <DEFINED_DATA ADDRESS="0x538" DATATYPE="Elf64_Rela" SIZE="0x18" />
+        <DEFINED_DATA ADDRESS="0x550" DATATYPE="Elf64_Rela" SIZE="0x18" />
+        <DEFINED_DATA ADDRESS="0x568" DATATYPE="Elf64_Rela" SIZE="0x18" />
+        <DEFINED_DATA ADDRESS="0x580" DATATYPE="Elf64_Rela" SIZE="0x18" />
+        <DEFINED_DATA ADDRESS="0x598" DATATYPE="Elf64_Rela" SIZE="0x18" />
+        <DEFINED_DATA ADDRESS="0x5B0" DATATYPE="Elf64_Rela" SIZE="0x18" />
+        <DEFINED_DATA ADDRESS="0x5C8" DATATYPE="Elf64_Rela" SIZE="0x18" />
+        <DEFINED_DATA ADDRESS="0x5E0" DATATYPE="Elf64_Rela" SIZE="0x18" />
+        <DEFINED_DATA ADDRESS="0x5F8" DATATYPE="Elf64_Rela" SIZE="0x18" />
+        <DEFINED_DATA ADDRESS="0x610" DATATYPE="Elf64_Rela" SIZE="0x18" />
+        <DEFINED_DATA ADDRESS="0x628" DATATYPE="Elf64_Rela" SIZE="0x18" />
+        <DEFINED_DATA ADDRESS="0x640" DATATYPE="Elf64_Rela" SIZE="0x18" />
+        <DEFINED_DATA ADDRESS="0x2008" DATATYPE="string" SIZE="0xE">
+            <TYPEINFO_CMT>s</TYPEINFO_CMT>
+        </DEFINED_DATA>
+        <DEFINED_DATA ADDRESS="0x2018" DATATYPE="string" SIZE="0x33">
+            <TYPEINFO_CMT>aThisIsASuperSi</TYPEINFO_CMT>
+        </DEFINED_DATA>
+        <DEFINED_DATA ADDRESS="0x204B" DATATYPE="string" SIZE="0x1A">
+            <TYPEINFO_CMT>format</TYPEINFO_CMT>
+        </DEFINED_DATA>
+        <DEFINED_DATA ADDRESS="0x2065" DATATYPE="string" SIZE="0x3">
+            <TYPEINFO_CMT>aD</TYPEINFO_CMT>
+        </DEFINED_DATA>
+        <DEFINED_DATA ADDRESS="0x2068" DATATYPE="string" SIZE="0x4">
+            <TYPEINFO_CMT>aD_0</TYPEINFO_CMT>
+        </DEFINED_DATA>
+        <DEFINED_DATA ADDRESS="0x3DA0" DATATYPE="pointer" SIZE="0x8">
+            <TYPEINFO_CMT>__frame_dummy_init_array_entry</TYPEINFO_CMT>
+        </DEFINED_DATA>
+        <DEFINED_DATA ADDRESS="0x3DA8" DATATYPE="pointer" SIZE="0x8">
+            <TYPEINFO_CMT>__do_global_dtors_aux_fini_array_entry</TYPEINFO_CMT>
+        </DEFINED_DATA>
+        <DEFINED_DATA ADDRESS="0x3DB0" DATATYPE="Elf64_Dyn" SIZE="0x10">
+            <TYPEINFO_CMT>_DYNAMIC</TYPEINFO_CMT>
+        </DEFINED_DATA>
+        <DEFINED_DATA ADDRESS="0x3DC0" DATATYPE="Elf64_Dyn" SIZE="0x10" />
+        <DEFINED_DATA ADDRESS="0x3DD0" DATATYPE="Elf64_Dyn" SIZE="0x10" />
+        <DEFINED_DATA ADDRESS="0x3DE0" DATATYPE="Elf64_Dyn" SIZE="0x10" />
+        <DEFINED_DATA ADDRESS="0x3DF0" DATATYPE="Elf64_Dyn" SIZE="0x10" />
+        <DEFINED_DATA ADDRESS="0x3E00" DATATYPE="Elf64_Dyn" SIZE="0x10" />
+        <DEFINED_DATA ADDRESS="0x3E10" DATATYPE="Elf64_Dyn" SIZE="0x10" />
+        <DEFINED_DATA ADDRESS="0x3E20" DATATYPE="Elf64_Dyn" SIZE="0x10" />
+        <DEFINED_DATA ADDRESS="0x3E30" DATATYPE="Elf64_Dyn" SIZE="0x10" />
+        <DEFINED_DATA ADDRESS="0x3E40" DATATYPE="Elf64_Dyn" SIZE="0x10" />
+        <DEFINED_DATA ADDRESS="0x3E50" DATATYPE="Elf64_Dyn" SIZE="0x10" />
+        <DEFINED_DATA ADDRESS="0x3E60" DATATYPE="Elf64_Dyn" SIZE="0x10" />
+        <DEFINED_DATA ADDRESS="0x3E70" DATATYPE="Elf64_Dyn" SIZE="0x10" />
+        <DEFINED_DATA ADDRESS="0x3E80" DATATYPE="Elf64_Dyn" SIZE="0x10" />
+        <DEFINED_DATA ADDRESS="0x3E90" DATATYPE="Elf64_Dyn" SIZE="0x10" />
+        <DEFINED_DATA ADDRESS="0x3EA0" DATATYPE="Elf64_Dyn" SIZE="0x10" />
+        <DEFINED_DATA ADDRESS="0x3EB0" DATATYPE="Elf64_Dyn" SIZE="0x10" />
+        <DEFINED_DATA ADDRESS="0x3EC0" DATATYPE="Elf64_Dyn" SIZE="0x10" />
+        <DEFINED_DATA ADDRESS="0x3ED0" DATATYPE="Elf64_Dyn" SIZE="0x10" />
+        <DEFINED_DATA ADDRESS="0x3EE0" DATATYPE="Elf64_Dyn" SIZE="0x10" />
+        <DEFINED_DATA ADDRESS="0x3EF0" DATATYPE="Elf64_Dyn" SIZE="0x10" />
+        <DEFINED_DATA ADDRESS="0x3F00" DATATYPE="Elf64_Dyn" SIZE="0x10" />
+        <DEFINED_DATA ADDRESS="0x3F10" DATATYPE="Elf64_Dyn" SIZE="0x10" />
+        <DEFINED_DATA ADDRESS="0x3F20" DATATYPE="Elf64_Dyn" SIZE="0x10" />
+        <DEFINED_DATA ADDRESS="0x3F30" DATATYPE="Elf64_Dyn" SIZE="0x10" />
+        <DEFINED_DATA ADDRESS="0x3F40" DATATYPE="Elf64_Dyn" SIZE="0x10" />
+        <DEFINED_DATA ADDRESS="0x3F50" DATATYPE="Elf64_Dyn" SIZE="0x10" />
+        <DEFINED_DATA ADDRESS="0x3FA0" DATATYPE="pointer" SIZE="0x8">
+            <TYPEINFO_CMT>_GLOBAL_OFFSET_TABLE_</TYPEINFO_CMT>
+        </DEFINED_DATA>
+        <DEFINED_DATA ADDRESS="0x3FA8" DATATYPE="qword" SIZE="0x8">
+            <TYPEINFO_CMT>qword_3FA8</TYPEINFO_CMT>
+        </DEFINED_DATA>
+        <DEFINED_DATA ADDRESS="0x3FB0" DATATYPE="qword" SIZE="0x8">
+            <TYPEINFO_CMT>qword_3FB0</TYPEINFO_CMT>
+        </DEFINED_DATA>
+        <DEFINED_DATA ADDRESS="0x3FB8" DATATYPE="pointer" SIZE="0x8">
+            <TYPEINFO_CMT>puts_ptr</TYPEINFO_CMT>
+        </DEFINED_DATA>
+        <DEFINED_DATA ADDRESS="0x3FC0" DATATYPE="pointer" SIZE="0x8">
+            <TYPEINFO_CMT>__stack_chk_fail_ptr</TYPEINFO_CMT>
+        </DEFINED_DATA>
+        <DEFINED_DATA ADDRESS="0x3FC8" DATATYPE="pointer" SIZE="0x8">
+            <TYPEINFO_CMT>printf_ptr</TYPEINFO_CMT>
+        </DEFINED_DATA>
+        <DEFINED_DATA ADDRESS="0x3FD0" DATATYPE="pointer" SIZE="0x8">
+            <TYPEINFO_CMT>__isoc99_scanf_ptr</TYPEINFO_CMT>
+        </DEFINED_DATA>
+        <DEFINED_DATA ADDRESS="0x3FD8" DATATYPE="pointer" SIZE="0x8">
+            <TYPEINFO_CMT>_ITM_deregisterTMCloneTable_ptr</TYPEINFO_CMT>
+        </DEFINED_DATA>
+        <DEFINED_DATA ADDRESS="0x3FE0" DATATYPE="pointer" SIZE="0x8">
+            <TYPEINFO_CMT>__libc_start_main_ptr</TYPEINFO_CMT>
+        </DEFINED_DATA>
+        <DEFINED_DATA ADDRESS="0x3FE8" DATATYPE="pointer" SIZE="0x8">
+            <TYPEINFO_CMT>__gmon_start___ptr</TYPEINFO_CMT>
+        </DEFINED_DATA>
+        <DEFINED_DATA ADDRESS="0x3FF0" DATATYPE="pointer" SIZE="0x8">
+            <TYPEINFO_CMT>_ITM_registerTMCloneTable_ptr</TYPEINFO_CMT>
+        </DEFINED_DATA>
+        <DEFINED_DATA ADDRESS="0x3FF8" DATATYPE="pointer" SIZE="0x8">
+            <TYPEINFO_CMT>__cxa_finalize_ptr</TYPEINFO_CMT>
+        </DEFINED_DATA>
+        <DEFINED_DATA ADDRESS="0x4008" DATATYPE="pointer" SIZE="0x8">
+            <TYPEINFO_CMT>__dso_handle</TYPEINFO_CMT>
+        </DEFINED_DATA>
+        <DEFINED_DATA ADDRESS="0x4010" DATATYPE="byte" SIZE="0x1">
+            <TYPEINFO_CMT>__bss_start</TYPEINFO_CMT>
+        </DEFINED_DATA>
+    </DATA>
+    <COMMENTS>
+        <COMMENT ADDRESS="0x0" TYPE="end-of-line">File format: \x7FELF </COMMENT>
+        <COMMENT ADDRESS="0x4" TYPE="end-of-line">File class: 64-bit </COMMENT>
+        <COMMENT ADDRESS="0x5" TYPE="end-of-line">Data encoding: little-endian </COMMENT>
+        <COMMENT ADDRESS="0x6" TYPE="end-of-line">File version </COMMENT>
+        <COMMENT ADDRESS="0x7" TYPE="end-of-line">OS/ABI: UNIX System V ABI </COMMENT>
+        <COMMENT ADDRESS="0x8" TYPE="end-of-line">ABI Version </COMMENT>
+        <COMMENT ADDRESS="0x9" TYPE="end-of-line">Padding </COMMENT>
+        <COMMENT ADDRESS="0x10" TYPE="end-of-line">File type: Shared object </COMMENT>
+        <COMMENT ADDRESS="0x12" TYPE="end-of-line">Machine: x86-64 </COMMENT>
+        <COMMENT ADDRESS="0x14" TYPE="end-of-line">File version </COMMENT>
+        <COMMENT ADDRESS="0x18" TYPE="end-of-line">Entry point </COMMENT>
+        <COMMENT ADDRESS="0x20" TYPE="end-of-line">PHT file offset </COMMENT>
+        <COMMENT ADDRESS="0x28" TYPE="end-of-line">SHT file offset </COMMENT>
+        <COMMENT ADDRESS="0x30" TYPE="end-of-line">Processor-specific flags </COMMENT>
+        <COMMENT ADDRESS="0x34" TYPE="end-of-line">ELF header size </COMMENT>
+        <COMMENT ADDRESS="0x36" TYPE="end-of-line">PHT entry size </COMMENT>
+        <COMMENT ADDRESS="0x38" TYPE="end-of-line">Number of entries in PHT </COMMENT>
+        <COMMENT ADDRESS="0x3A" TYPE="end-of-line">SHT entry size </COMMENT>
+        <COMMENT ADDRESS="0x3C" TYPE="end-of-line">Number of entries in SHT </COMMENT>
+        <COMMENT ADDRESS="0x3E" TYPE="end-of-line">SHT entry index for string table </COMMENT>
+        <COMMENT ADDRESS="0x40" TYPE="end-of-line">Type: PHDR </COMMENT>
+        <COMMENT ADDRESS="0x44" TYPE="end-of-line">Flags </COMMENT>
+        <COMMENT ADDRESS="0x48" TYPE="end-of-line">File offset </COMMENT>
+        <COMMENT ADDRESS="0x50" TYPE="end-of-line">Virtual address </COMMENT>
+        <COMMENT ADDRESS="0x58" TYPE="end-of-line">Physical address </COMMENT>
+        <COMMENT ADDRESS="0x60" TYPE="end-of-line">Size in file image </COMMENT>
+        <COMMENT ADDRESS="0x68" TYPE="end-of-line">Size in memory image </COMMENT>
+        <COMMENT ADDRESS="0x70" TYPE="end-of-line">Alignment </COMMENT>
+        <COMMENT ADDRESS="0x78" TYPE="end-of-line">Type: INTERP </COMMENT>
+        <COMMENT ADDRESS="0x7C" TYPE="end-of-line">Flags </COMMENT>
+        <COMMENT ADDRESS="0x80" TYPE="end-of-line">File offset </COMMENT>
+        <COMMENT ADDRESS="0x88" TYPE="end-of-line">Virtual address </COMMENT>
+        <COMMENT ADDRESS="0x90" TYPE="end-of-line">Physical address </COMMENT>
+        <COMMENT ADDRESS="0x98" TYPE="end-of-line">Size in file image </COMMENT>
+        <COMMENT ADDRESS="0xA0" TYPE="end-of-line">Size in memory image </COMMENT>
+        <COMMENT ADDRESS="0xA8" TYPE="end-of-line">Alignment </COMMENT>
+        <COMMENT ADDRESS="0xB0" TYPE="end-of-line">Type: LOAD </COMMENT>
+        <COMMENT ADDRESS="0xB4" TYPE="end-of-line">Flags </COMMENT>
+        <COMMENT ADDRESS="0xB8" TYPE="end-of-line">File offset </COMMENT>
+        <COMMENT ADDRESS="0xC0" TYPE="end-of-line">Virtual address </COMMENT>
+        <COMMENT ADDRESS="0xC8" TYPE="end-of-line">Physical address </COMMENT>
+        <COMMENT ADDRESS="0xD0" TYPE="end-of-line">Size in file image </COMMENT>
+        <COMMENT ADDRESS="0xD8" TYPE="end-of-line">Size in memory image </COMMENT>
+        <COMMENT ADDRESS="0xE0" TYPE="end-of-line">Alignment </COMMENT>
+        <COMMENT ADDRESS="0xE8" TYPE="end-of-line">Type: LOAD </COMMENT>
+        <COMMENT ADDRESS="0xEC" TYPE="end-of-line">Flags </COMMENT>
+        <COMMENT ADDRESS="0xF0" TYPE="end-of-line">File offset </COMMENT>
+        <COMMENT ADDRESS="0xF8" TYPE="end-of-line">Virtual address </COMMENT>
+        <COMMENT ADDRESS="0x100" TYPE="end-of-line">Physical address </COMMENT>
+        <COMMENT ADDRESS="0x108" TYPE="end-of-line">Size in file image </COMMENT>
+        <COMMENT ADDRESS="0x110" TYPE="end-of-line">Size in memory image </COMMENT>
+        <COMMENT ADDRESS="0x118" TYPE="end-of-line">Alignment </COMMENT>
+        <COMMENT ADDRESS="0x120" TYPE="end-of-line">Type: LOAD </COMMENT>
+        <COMMENT ADDRESS="0x124" TYPE="end-of-line">Flags </COMMENT>
+        <COMMENT ADDRESS="0x128" TYPE="end-of-line">File offset </COMMENT>
+        <COMMENT ADDRESS="0x130" TYPE="end-of-line">Virtual address </COMMENT>
+        <COMMENT ADDRESS="0x138" TYPE="end-of-line">Physical address </COMMENT>
+        <COMMENT ADDRESS="0x140" TYPE="end-of-line">Size in file image </COMMENT>
+        <COMMENT ADDRESS="0x148" TYPE="end-of-line">Size in memory image </COMMENT>
+        <COMMENT ADDRESS="0x150" TYPE="end-of-line">Alignment </COMMENT>
+        <COMMENT ADDRESS="0x158" TYPE="end-of-line">Type: LOAD </COMMENT>
+        <COMMENT ADDRESS="0x15C" TYPE="end-of-line">Flags </COMMENT>
+        <COMMENT ADDRESS="0x160" TYPE="end-of-line">File offset </COMMENT>
+        <COMMENT ADDRESS="0x168" TYPE="end-of-line">Virtual address </COMMENT>
+        <COMMENT ADDRESS="0x170" TYPE="end-of-line">Physical address </COMMENT>
+        <COMMENT ADDRESS="0x178" TYPE="end-of-line">Size in file image </COMMENT>
+        <COMMENT ADDRESS="0x180" TYPE="end-of-line">Size in memory image </COMMENT>
+        <COMMENT ADDRESS="0x188" TYPE="end-of-line">Alignment </COMMENT>
+        <COMMENT ADDRESS="0x190" TYPE="end-of-line">Type: DYNAMIC </COMMENT>
+        <COMMENT ADDRESS="0x194" TYPE="end-of-line">Flags </COMMENT>
+        <COMMENT ADDRESS="0x198" TYPE="end-of-line">File offset </COMMENT>
+        <COMMENT ADDRESS="0x1A0" TYPE="end-of-line">Virtual address </COMMENT>
+        <COMMENT ADDRESS="0x1A8" TYPE="end-of-line">Physical address </COMMENT>
+        <COMMENT ADDRESS="0x1B0" TYPE="end-of-line">Size in file image </COMMENT>
+        <COMMENT ADDRESS="0x1B8" TYPE="end-of-line">Size in memory image </COMMENT>
+        <COMMENT ADDRESS="0x1C0" TYPE="end-of-line">Alignment </COMMENT>
+        <COMMENT ADDRESS="0x1C8" TYPE="end-of-line">Type: NOTE </COMMENT>
+        <COMMENT ADDRESS="0x1CC" TYPE="end-of-line">Flags </COMMENT>
+        <COMMENT ADDRESS="0x1D0" TYPE="end-of-line">File offset </COMMENT>
+        <COMMENT ADDRESS="0x1D8" TYPE="end-of-line">Virtual address </COMMENT>
+        <COMMENT ADDRESS="0x1E0" TYPE="end-of-line">Physical address </COMMENT>
+        <COMMENT ADDRESS="0x1E8" TYPE="end-of-line">Size in file image </COMMENT>
+        <COMMENT ADDRESS="0x1F0" TYPE="end-of-line">Size in memory image </COMMENT>
+        <COMMENT ADDRESS="0x1F8" TYPE="end-of-line">Alignment </COMMENT>
+        <COMMENT ADDRESS="0x200" TYPE="end-of-line">Type: EH_FRAME </COMMENT>
+        <COMMENT ADDRESS="0x204" TYPE="end-of-line">Flags </COMMENT>
+        <COMMENT ADDRESS="0x208" TYPE="end-of-line">File offset </COMMENT>
+        <COMMENT ADDRESS="0x210" TYPE="end-of-line">Virtual address </COMMENT>
+        <COMMENT ADDRESS="0x218" TYPE="end-of-line">Physical address </COMMENT>
+        <COMMENT ADDRESS="0x220" TYPE="end-of-line">Size in file image </COMMENT>
+        <COMMENT ADDRESS="0x228" TYPE="end-of-line">Size in memory image </COMMENT>
+        <COMMENT ADDRESS="0x230" TYPE="end-of-line">Alignment </COMMENT>
+        <COMMENT ADDRESS="0x238" TYPE="end-of-line">Type: STACK </COMMENT>
+        <COMMENT ADDRESS="0x23C" TYPE="end-of-line">Flags </COMMENT>
+        <COMMENT ADDRESS="0x240" TYPE="end-of-line">File offset </COMMENT>
+        <COMMENT ADDRESS="0x248" TYPE="end-of-line">Virtual address </COMMENT>
+        <COMMENT ADDRESS="0x250" TYPE="end-of-line">Physical address </COMMENT>
+        <COMMENT ADDRESS="0x258" TYPE="end-of-line">Size in file image </COMMENT>
+        <COMMENT ADDRESS="0x260" TYPE="end-of-line">Size in memory image </COMMENT>
+        <COMMENT ADDRESS="0x268" TYPE="end-of-line">Alignment </COMMENT>
+        <COMMENT ADDRESS="0x270" TYPE="end-of-line">Type: RO-AFTER </COMMENT>
+        <COMMENT ADDRESS="0x274" TYPE="end-of-line">Flags </COMMENT>
+        <COMMENT ADDRESS="0x278" TYPE="end-of-line">File offset </COMMENT>
+        <COMMENT ADDRESS="0x280" TYPE="end-of-line">Virtual address </COMMENT>
+        <COMMENT ADDRESS="0x288" TYPE="end-of-line">Physical address </COMMENT>
+        <COMMENT ADDRESS="0x290" TYPE="end-of-line">Size in file image </COMMENT>
+        <COMMENT ADDRESS="0x298" TYPE="end-of-line">Size in memory image </COMMENT>
+        <COMMENT ADDRESS="0x2A0" TYPE="end-of-line">Alignment </COMMENT>
+        <COMMENT ADDRESS="0x2C4" TYPE="end-of-line">Name Size </COMMENT>
+        <COMMENT ADDRESS="0x2C8" TYPE="end-of-line">Desc Size </COMMENT>
+        <COMMENT ADDRESS="0x2CC" TYPE="end-of-line">Type: NT_GNU_ABI_TAG </COMMENT>
+        <COMMENT ADDRESS="0x2D0" TYPE="end-of-line">Name </COMMENT>
+        <COMMENT ADDRESS="0x2D4" TYPE="end-of-line">ABI: Linux 3.2.0 </COMMENT>
+        <COMMENT ADDRESS="0x2E4" TYPE="end-of-line">Name Size </COMMENT>
+        <COMMENT ADDRESS="0x2E8" TYPE="end-of-line">Desc Size </COMMENT>
+        <COMMENT ADDRESS="0x2EC" TYPE="end-of-line">Type: NT_GNU_BUILD_ID </COMMENT>
+        <COMMENT ADDRESS="0x2F0" TYPE="end-of-line">Name </COMMENT>
+        <COMMENT ADDRESS="0x2F4" TYPE="end-of-line">Desc </COMMENT>
+        <COMMENT ADDRESS="0x4E0" TYPE="end-of-line">local  symbol: _ITM_deregisterTMCloneTable </COMMENT>
+        <COMMENT ADDRESS="0x4E2" TYPE="end-of-line">puts@@GLIBC_2.2.5 </COMMENT>
+        <COMMENT ADDRESS="0x4E4" TYPE="end-of-line">__stack_chk_fail@@GLIBC_2.4 </COMMENT>
+        <COMMENT ADDRESS="0x4E6" TYPE="end-of-line">printf@@GLIBC_2.2.5 </COMMENT>
+        <COMMENT ADDRESS="0x4E8" TYPE="end-of-line">__libc_start_main@@GLIBC_2.2.5 </COMMENT>
+        <COMMENT ADDRESS="0x4EA" TYPE="end-of-line">local  symbol: __gmon_start__ </COMMENT>
+        <COMMENT ADDRESS="0x4EC" TYPE="end-of-line">__isoc99_scanf@@GLIBC_2.7 </COMMENT>
+        <COMMENT ADDRESS="0x4EE" TYPE="end-of-line">local  symbol: _ITM_registerTMCloneTable </COMMENT>
+        <COMMENT ADDRESS="0x4F0" TYPE="end-of-line">__cxa_finalize@@GLIBC_2.2.5 </COMMENT>
+        <COMMENT ADDRESS="0x538" TYPE="end-of-line">R_X86_64_RELATIVE +1160h </COMMENT>
+        <COMMENT ADDRESS="0x550" TYPE="end-of-line">R_X86_64_RELATIVE +1120h </COMMENT>
+        <COMMENT ADDRESS="0x568" TYPE="end-of-line">R_X86_64_RELATIVE +4008h </COMMENT>
+        <COMMENT ADDRESS="0x580" TYPE="end-of-line">R_X86_64_GLOB_DAT _ITM_deregisterTMCloneTable </COMMENT>
+        <COMMENT ADDRESS="0x598" TYPE="end-of-line">R_X86_64_GLOB_DAT __libc_start_main </COMMENT>
+        <COMMENT ADDRESS="0x5B0" TYPE="end-of-line">R_X86_64_GLOB_DAT __gmon_start__ </COMMENT>
+        <COMMENT ADDRESS="0x5C8" TYPE="end-of-line">R_X86_64_GLOB_DAT _ITM_registerTMCloneTable </COMMENT>
+        <COMMENT ADDRESS="0x5E0" TYPE="end-of-line">R_X86_64_GLOB_DAT __cxa_finalize </COMMENT>
+        <COMMENT ADDRESS="0x5F8" TYPE="end-of-line">R_X86_64_JUMP_SLOT puts </COMMENT>
+        <COMMENT ADDRESS="0x610" TYPE="end-of-line">R_X86_64_JUMP_SLOT __stack_chk_fail </COMMENT>
+        <COMMENT ADDRESS="0x628" TYPE="end-of-line">R_X86_64_JUMP_SLOT printf </COMMENT>
+        <COMMENT ADDRESS="0x640" TYPE="end-of-line">R_X86_64_JUMP_SLOT __isoc99_scanf </COMMENT>
+        <COMMENT ADDRESS="0x1000" TYPE="end-of-line">_init </COMMENT>
+        <COMMENT ADDRESS="0x1082" TYPE="end-of-line">rtld_fini </COMMENT>
+        <COMMENT ADDRESS="0x1085" TYPE="end-of-line">argc </COMMENT>
+        <COMMENT ADDRESS="0x1086" TYPE="end-of-line">ubp_av </COMMENT>
+        <COMMENT ADDRESS="0x108E" TYPE="end-of-line">stack_end </COMMENT>
+        <COMMENT ADDRESS="0x108F" TYPE="end-of-line">fini </COMMENT>
+        <COMMENT ADDRESS="0x1096" TYPE="end-of-line">init </COMMENT>
+        <COMMENT ADDRESS="0x109D" TYPE="end-of-line">main </COMMENT>
+        <COMMENT ADDRESS="0x1137" TYPE="end-of-line">void * </COMMENT>
+        <COMMENT ADDRESS="0x1254" TYPE="end-of-line">_fini </COMMENT>
+        <COMMENT ADDRESS="0x3DA0" TYPE="end-of-line">Alternative name is &apos;__init_array_start&apos; </COMMENT>
+        <COMMENT ADDRESS="0x3DA8" TYPE="end-of-line">Alternative name is &apos;__init_array_end&apos; </COMMENT>
+        <COMMENT ADDRESS="0x3DB0" TYPE="end-of-line">DT_NEEDED libc.so.6 </COMMENT>
+        <COMMENT ADDRESS="0x3DC0" TYPE="end-of-line">DT_INIT  </COMMENT>
+        <COMMENT ADDRESS="0x3DD0" TYPE="end-of-line">DT_FINI  </COMMENT>
+        <COMMENT ADDRESS="0x3DE0" TYPE="end-of-line">DT_INIT_ARRAY  </COMMENT>
+        <COMMENT ADDRESS="0x3DF0" TYPE="end-of-line">DT_INIT_ARRAYSZ  </COMMENT>
+        <COMMENT ADDRESS="0x3E00" TYPE="end-of-line">DT_FINI_ARRAY  </COMMENT>
+        <COMMENT ADDRESS="0x3E10" TYPE="end-of-line">DT_FINI_ARRAYSZ  </COMMENT>
+        <COMMENT ADDRESS="0x3E20" TYPE="end-of-line">DT_GNU_HASH  </COMMENT>
+        <COMMENT ADDRESS="0x3E30" TYPE="end-of-line">DT_STRTAB  </COMMENT>
+        <COMMENT ADDRESS="0x3E40" TYPE="end-of-line">DT_SYMTAB  </COMMENT>
+        <COMMENT ADDRESS="0x3E50" TYPE="end-of-line">DT_STRSZ  </COMMENT>
+        <COMMENT ADDRESS="0x3E60" TYPE="end-of-line">DT_SYMENT  </COMMENT>
+        <COMMENT ADDRESS="0x3E70" TYPE="end-of-line">DT_DEBUG  </COMMENT>
+        <COMMENT ADDRESS="0x3E80" TYPE="end-of-line">DT_PLTGOT  </COMMENT>
+        <COMMENT ADDRESS="0x3E90" TYPE="end-of-line">DT_PLTRELSZ  </COMMENT>
+        <COMMENT ADDRESS="0x3EA0" TYPE="end-of-line">DT_PLTREL  </COMMENT>
+        <COMMENT ADDRESS="0x3EB0" TYPE="end-of-line">DT_JMPREL  </COMMENT>
+        <COMMENT ADDRESS="0x3EC0" TYPE="end-of-line">DT_RELA  </COMMENT>
+        <COMMENT ADDRESS="0x3ED0" TYPE="end-of-line">DT_RELASZ  </COMMENT>
+        <COMMENT ADDRESS="0x3EE0" TYPE="end-of-line">DT_RELAENT  </COMMENT>
+        <COMMENT ADDRESS="0x3EF0" TYPE="end-of-line">DT_FLAGS  </COMMENT>
+        <COMMENT ADDRESS="0x3F00" TYPE="end-of-line">DT_FLAGS_1  </COMMENT>
+        <COMMENT ADDRESS="0x3F10" TYPE="end-of-line">DT_VERNEED  </COMMENT>
+        <COMMENT ADDRESS="0x3F20" TYPE="end-of-line">DT_VERNEEDNUM  </COMMENT>
+        <COMMENT ADDRESS="0x3F30" TYPE="end-of-line">DT_VERSYM  </COMMENT>
+        <COMMENT ADDRESS="0x3F40" TYPE="end-of-line">DT_RELACOUNT  </COMMENT>
+        <COMMENT ADDRESS="0x3F50" TYPE="end-of-line">DT_NULL  </COMMENT>
+        <COMMENT ADDRESS="0x4000" TYPE="end-of-line">Alternative name is &apos;__data_start&apos;
+data_start </COMMENT>
+        <COMMENT ADDRESS="0x4010" TYPE="end-of-line">Alternative name is &apos;__TMC_END__&apos;
+completed.7931
+_edata </COMMENT>
+        <COMMENT ADDRESS="0x0" TYPE="pre">; File Name   : C:\Users\IEUser\Desktop\a.out 
+; Format      : ELF64 for x86-64 (Shared object) 
+; Interpreter &apos;/lib64/ld-linux-x86-64.so.2&apos; 
+; Needed Library &apos;libc.so.6&apos; 
+;  
+; Source File : &apos;crtstuff.c&apos; 
+; Source File : &apos;hello_world.c&apos; 
+; Source File : &apos;crtstuff.c&apos;  </COMMENT>
+        <COMMENT ADDRESS="0x40" TYPE="pre">; ELF64 Program Header 
+; PHT Entry 0  </COMMENT>
+        <COMMENT ADDRESS="0x78" TYPE="pre">; PHT Entry 1  </COMMENT>
+        <COMMENT ADDRESS="0xB0" TYPE="pre">; PHT Entry 2  </COMMENT>
+        <COMMENT ADDRESS="0xE8" TYPE="pre">; PHT Entry 3  </COMMENT>
+        <COMMENT ADDRESS="0x120" TYPE="pre">; PHT Entry 4  </COMMENT>
+        <COMMENT ADDRESS="0x158" TYPE="pre">; PHT Entry 5  </COMMENT>
+        <COMMENT ADDRESS="0x190" TYPE="pre">; PHT Entry 6  </COMMENT>
+        <COMMENT ADDRESS="0x1C8" TYPE="pre">; PHT Entry 7  </COMMENT>
+        <COMMENT ADDRESS="0x200" TYPE="pre">; PHT Entry 8  </COMMENT>
+        <COMMENT ADDRESS="0x238" TYPE="pre">; PHT Entry 9  </COMMENT>
+        <COMMENT ADDRESS="0x270" TYPE="pre">; PHT Entry 10  </COMMENT>
+        <COMMENT ADDRESS="0x2C4" TYPE="pre">; ELF Note Entry  </COMMENT>
+        <COMMENT ADDRESS="0x2E4" TYPE="pre">; ELF Note Entry  </COMMENT>
+        <COMMENT ADDRESS="0x308" TYPE="pre">; ELF GNU Hash Table  </COMMENT>
+        <COMMENT ADDRESS="0x330" TYPE="pre">; ELF Symbol Table  </COMMENT>
+        <COMMENT ADDRESS="0x420" TYPE="pre">; ELF String Table  </COMMENT>
+        <COMMENT ADDRESS="0x4DE" TYPE="pre">; ELF GNU Symbol Version Table  </COMMENT>
+        <COMMENT ADDRESS="0x4F8" TYPE="pre">; ELF GNU Symbol Version Requirements  </COMMENT>
+        <COMMENT ADDRESS="0x538" TYPE="pre">; ELF RELA Relocation Table  </COMMENT>
+        <COMMENT ADDRESS="0x5F8" TYPE="pre">; ELF JMPREL Relocation Table  </COMMENT>
+        <COMMENT ADDRESS="0x3DA0" TYPE="pre">; ELF Initialization Function Table  </COMMENT>
+        <COMMENT ADDRESS="0x3DA8" TYPE="pre">; ELF Termination Function Table  </COMMENT>
+        <COMMENT ADDRESS="0x3DB0" TYPE="pre">; ELF Dynamic Information  </COMMENT>
+    </COMMENTS>
+    <PROGRAM_ENTRY_POINTS>
+        <PROGRAM_ENTRY_POINT ADDRESS="0x1250" />
+        <PROGRAM_ENTRY_POINT ADDRESS="0x1254" />
+        <PROGRAM_ENTRY_POINT ADDRESS="0x4008" />
+        <PROGRAM_ENTRY_POINT ADDRESS="0x2000" />
+        <PROGRAM_ENTRY_POINT ADDRESS="0x11F0" />
+        <PROGRAM_ENTRY_POINT ADDRESS="0x1080" />
+        <PROGRAM_ENTRY_POINT ADDRESS="0x1165" />
+        <PROGRAM_ENTRY_POINT ADDRESS="0x4000" />
+        <PROGRAM_ENTRY_POINT ADDRESS="0x4010" />
+        <PROGRAM_ENTRY_POINT ADDRESS="0x1000" />
+    </PROGRAM_ENTRY_POINTS>
+    <SYMBOL_TABLE>
+        <SYMBOL ADDRESS="0x2A8" NAME="aLib64LdLinuxX8" />
+        <SYMBOL ADDRESS="0x2D0" NAME="aGnu" />
+        <SYMBOL ADDRESS="0x2F0" NAME="aGnu_0" />
+        <SYMBOL ADDRESS="0x308" NAME="elf_gnu_hash_nbuckets" />
+        <SYMBOL ADDRESS="0x30C" NAME="elf_gnu_hash_symbias" />
+        <SYMBOL ADDRESS="0x310" NAME="elf_gnu_hash_bitmask_nwords" />
+        <SYMBOL ADDRESS="0x314" NAME="elf_gnu_hash_shift" />
+        <SYMBOL ADDRESS="0x318" NAME="elf_gnu_hash_indexes" />
+        <SYMBOL ADDRESS="0x320" NAME="elf_gnu_hash_bucket" />
+        <SYMBOL ADDRESS="0x328" NAME="elf_gnu_hash_chain" />
+        <SYMBOL ADDRESS="0x421" NAME="aLibcSo6" />
+        <SYMBOL ADDRESS="0x42B" NAME="aIsoc99Scanf" />
+        <SYMBOL ADDRESS="0x43A" NAME="aPuts" />
+        <SYMBOL ADDRESS="0x43F" NAME="aStackChkFail" />
+        <SYMBOL ADDRESS="0x450" NAME="aPrintf" />
+        <SYMBOL ADDRESS="0x457" NAME="aCxaFinalize" />
+        <SYMBOL ADDRESS="0x466" NAME="aLibcStartMain" />
+        <SYMBOL ADDRESS="0x478" NAME="aGlibc27" />
+        <SYMBOL ADDRESS="0x482" NAME="aGlibc24" />
+        <SYMBOL ADDRESS="0x48C" NAME="aGlibc225" />
+        <SYMBOL ADDRESS="0x498" NAME="aItmDeregistert" />
+        <SYMBOL ADDRESS="0x4B4" NAME="aGmonStart" />
+        <SYMBOL ADDRESS="0x4C3" NAME="aItmRegistertmc" />
+        <SYMBOL ADDRESS="0x1000" NAME=".init_proc" />
+        <SYMBOL ADDRESS="0x1030" NAME=".puts" />
+        <SYMBOL ADDRESS="0x1040" NAME=".__stack_chk_fail" />
+        <SYMBOL ADDRESS="0x1050" NAME=".printf" />
+        <SYMBOL ADDRESS="0x1060" NAME=".__isoc99_scanf" />
+        <SYMBOL ADDRESS="0x1070" NAME="__cxa_finalize" />
+        <SYMBOL ADDRESS="0x1080" NAME="_start" />
+        <SYMBOL ADDRESS="0x10B0" NAME="deregister_tm_clones" />
+        <SYMBOL ADDRESS="0x10E0" NAME="register_tm_clones" />
+        <SYMBOL ADDRESS="0x1120" NAME="__do_global_dtors_aux" />
+        <SYMBOL ADDRESS="0x1160" NAME="frame_dummy" />
+        <SYMBOL ADDRESS="0x1165" NAME="main" />
+        <SYMBOL ADDRESS="0x11F0" NAME="__libc_csu_init" />
+        <SYMBOL ADDRESS="0x1250" NAME="__libc_csu_fini" />
+        <SYMBOL ADDRESS="0x1254" NAME=".term_proc" />
+        <SYMBOL ADDRESS="0x2000" NAME="_IO_stdin_used" />
+        <SYMBOL ADDRESS="0x2008" NAME="s" />
+        <SYMBOL ADDRESS="0x2018" NAME="aThisIsASuperSi" />
+        <SYMBOL ADDRESS="0x204B" NAME="format" />
+        <SYMBOL ADDRESS="0x2065" NAME="aD" />
+        <SYMBOL ADDRESS="0x2068" NAME="aD_0" />
+        <SYMBOL ADDRESS="0x206C" NAME="__GNU_EH_FRAME_HDR" />
+        <SYMBOL ADDRESS="0x21AC" NAME="__FRAME_END__" />
+        <SYMBOL ADDRESS="0x3DA0" NAME="__frame_dummy_init_array_entry" />
+        <SYMBOL ADDRESS="0x3DA8" NAME="__do_global_dtors_aux_fini_array_entry" />
+        <SYMBOL ADDRESS="0x3DB0" NAME="_DYNAMIC" />
+        <SYMBOL ADDRESS="0x3FA0" NAME="_GLOBAL_OFFSET_TABLE_" />
+        <SYMBOL ADDRESS="0x3FB8" NAME="puts_ptr" />
+        <SYMBOL ADDRESS="0x3FC0" NAME="__stack_chk_fail_ptr" />
+        <SYMBOL ADDRESS="0x3FC8" NAME="printf_ptr" />
+        <SYMBOL ADDRESS="0x3FD0" NAME="__isoc99_scanf_ptr" />
+        <SYMBOL ADDRESS="0x3FD8" NAME="_ITM_deregisterTMCloneTable_ptr" />
+        <SYMBOL ADDRESS="0x3FE0" NAME="__libc_start_main_ptr" />
+        <SYMBOL ADDRESS="0x3FE8" NAME="__gmon_start___ptr" />
+        <SYMBOL ADDRESS="0x3FF0" NAME="_ITM_registerTMCloneTable_ptr" />
+        <SYMBOL ADDRESS="0x3FF8" NAME="__cxa_finalize_ptr" />
+        <SYMBOL ADDRESS="0x4000" NAME="__data_start" />
+        <SYMBOL ADDRESS="0x4008" NAME="__dso_handle" />
+        <SYMBOL ADDRESS="0x4010" NAME="__bss_start" />
+        <SYMBOL ADDRESS="0x4018" NAME="_end" />
+        <SYMBOL ADDRESS="0x4020" NAME="puts" />
+        <SYMBOL ADDRESS="0x4028" NAME="__stack_chk_fail" />
+        <SYMBOL ADDRESS="0x4030" NAME="printf" />
+        <SYMBOL ADDRESS="0x4038" NAME="__libc_start_main" />
+        <SYMBOL ADDRESS="0x4040" NAME="__isoc99_scanf" />
+        <SYMBOL ADDRESS="0x4048" NAME="__imp___cxa_finalize" />
+        <SYMBOL ADDRESS="0x4050" NAME="_ITM_deregisterTMCloneTable" />
+        <SYMBOL ADDRESS="0x4058" NAME="__gmon_start__" />
+        <SYMBOL ADDRESS="0x4060" NAME="_ITM_registerTMCloneTable" />
+    </SYMBOL_TABLE>
+    <FUNCTIONS>
+        <FUNCTION ENTRY_POINT="0x1000" NAME=".init_proc">
+            <ADDRESS_RANGE START="0x1000" END="0x1016" />
+            <TYPEINFO_CMT>_init_proc</TYPEINFO_CMT>
+            <STACK_FRAME LOCAL_VAR_SIZE="0x8" REGISTER_SAVE_SIZE="0x0" RETURN_ADDR_SIZE="0x8" BYTES_PURGED="0x0" />
+        </FUNCTION>
+        <FUNCTION ENTRY_POINT="0x1020">
+            <ADDRESS_RANGE START="0x1020" END="0x102B" />
+            <TYPEINFO_CMT>sub_1020</TYPEINFO_CMT>
+        </FUNCTION>
+        <FUNCTION ENTRY_POINT="0x1030" NAME=".puts">
+            <ADDRESS_RANGE START="0x1030" END="0x1035" />
+            <TYPEINFO_CMT>_puts</TYPEINFO_CMT>
+        </FUNCTION>
+        <FUNCTION ENTRY_POINT="0x1040" NAME=".__stack_chk_fail">
+            <ADDRESS_RANGE START="0x1040" END="0x1045" />
+            <TYPEINFO_CMT>___stack_chk_fail</TYPEINFO_CMT>
+        </FUNCTION>
+        <FUNCTION ENTRY_POINT="0x1050" NAME=".printf">
+            <ADDRESS_RANGE START="0x1050" END="0x1055" />
+            <TYPEINFO_CMT>_printf</TYPEINFO_CMT>
+        </FUNCTION>
+        <FUNCTION ENTRY_POINT="0x1060" NAME=".__isoc99_scanf">
+            <ADDRESS_RANGE START="0x1060" END="0x1065" />
+            <TYPEINFO_CMT>___isoc99_scanf</TYPEINFO_CMT>
+        </FUNCTION>
+        <FUNCTION ENTRY_POINT="0x1070" NAME="__cxa_finalize">
+            <ADDRESS_RANGE START="0x1070" END="0x1075" />
+            <TYPEINFO_CMT>__cxa_finalize</TYPEINFO_CMT>
+        </FUNCTION>
+        <FUNCTION ENTRY_POINT="0x1080" NAME="_start">
+            <ADDRESS_RANGE START="0x1080" END="0x10AA" />
+            <TYPEINFO_CMT>_start</TYPEINFO_CMT>
+        </FUNCTION>
+        <FUNCTION ENTRY_POINT="0x10B0" NAME="deregister_tm_clones">
+            <ADDRESS_RANGE START="0x10B0" END="0x10D8" />
+            <TYPEINFO_CMT>deregister_tm_clones</TYPEINFO_CMT>
+            <STACK_FRAME LOCAL_VAR_SIZE="0x0" REGISTER_SAVE_SIZE="0x0" RETURN_ADDR_SIZE="0x8" BYTES_PURGED="0x0" />
+        </FUNCTION>
+        <FUNCTION ENTRY_POINT="0x10E0" NAME="register_tm_clones">
+            <ADDRESS_RANGE START="0x10E0" END="0x1118" />
+            <TYPEINFO_CMT>register_tm_clones</TYPEINFO_CMT>
+            <STACK_FRAME LOCAL_VAR_SIZE="0x0" REGISTER_SAVE_SIZE="0x0" RETURN_ADDR_SIZE="0x8" BYTES_PURGED="0x0" />
+        </FUNCTION>
+        <FUNCTION ENTRY_POINT="0x1120" NAME="__do_global_dtors_aux">
+            <ADDRESS_RANGE START="0x1120" END="0x1158" />
+            <TYPEINFO_CMT>__do_global_dtors_aux</TYPEINFO_CMT>
+            <STACK_FRAME LOCAL_VAR_SIZE="0x0" REGISTER_SAVE_SIZE="0x0" RETURN_ADDR_SIZE="0x8" BYTES_PURGED="0x0" />
+        </FUNCTION>
+        <FUNCTION ENTRY_POINT="0x1160" NAME="frame_dummy">
+            <ADDRESS_RANGE START="0x1160" END="0x1164" />
+            <TYPEINFO_CMT>frame_dummy</TYPEINFO_CMT>
+            <STACK_FRAME LOCAL_VAR_SIZE="0x0" REGISTER_SAVE_SIZE="0x0" RETURN_ADDR_SIZE="0x8" BYTES_PURGED="0x0" />
+        </FUNCTION>
+        <FUNCTION ENTRY_POINT="0x1165" NAME="main">
+            <ADDRESS_RANGE START="0x1165" END="0x11ED" />
+            <TYPEINFO_CMT>main</TYPEINFO_CMT>
+            <STACK_FRAME LOCAL_VAR_SIZE="0x10" REGISTER_SAVE_SIZE="0x8" RETURN_ADDR_SIZE="0x8" BYTES_PURGED="0x0">
+                <STACK_VAR STACK_PTR_OFFSET="-0x14" FRAME_PTR_OFFSET="-0xC" DATATYPE="dword" SIZE="0x4" />
+                <STACK_VAR STACK_PTR_OFFSET="-0x10" FRAME_PTR_OFFSET="-0x8" DATATYPE="qword" SIZE="0x8" />
+            </STACK_FRAME>
+        </FUNCTION>
+        <FUNCTION ENTRY_POINT="0x11F0" NAME="__libc_csu_init">
+            <ADDRESS_RANGE START="0x11F0" END="0x124C" />
+            <TYPEINFO_CMT>__libc_csu_init</TYPEINFO_CMT>
+            <STACK_FRAME LOCAL_VAR_SIZE="0x38" REGISTER_SAVE_SIZE="0x0" RETURN_ADDR_SIZE="0x8" BYTES_PURGED="0x0" />
+        </FUNCTION>
+        <FUNCTION ENTRY_POINT="0x1250" NAME="__libc_csu_fini">
+            <ADDRESS_RANGE START="0x1250" END="0x1250" />
+            <TYPEINFO_CMT>__libc_csu_fini</TYPEINFO_CMT>
+            <STACK_FRAME LOCAL_VAR_SIZE="0x0" REGISTER_SAVE_SIZE="0x0" RETURN_ADDR_SIZE="0x8" BYTES_PURGED="0x0" />
+        </FUNCTION>
+        <FUNCTION ENTRY_POINT="0x1254" NAME=".term_proc">
+            <ADDRESS_RANGE START="0x1254" END="0x125C" />
+            <TYPEINFO_CMT>_term_proc</TYPEINFO_CMT>
+            <STACK_FRAME LOCAL_VAR_SIZE="0x8" REGISTER_SAVE_SIZE="0x0" RETURN_ADDR_SIZE="0x8" BYTES_PURGED="0x0" />
+        </FUNCTION>
+    </FUNCTIONS>
+    <MARKUP>
+        <MEMORY_REFERENCE ADDRESS="0x18" OPERAND_INDEX="0" TO_ADDRESS="0x1080" PRIMARY="y" />
+        <MEMORY_REFERENCE ADDRESS="0x50" OPERAND_INDEX="0" TO_ADDRESS="0x40" PRIMARY="y" />
+        <MEMORY_REFERENCE ADDRESS="0x88" OPERAND_INDEX="0" TO_ADDRESS="0x2A8" PRIMARY="y" />
+        <MEMORY_REFERENCE ADDRESS="0xF8" OPERAND_INDEX="0" TO_ADDRESS="0x1000" PRIMARY="y" />
+        <MEMORY_REFERENCE ADDRESS="0x130" OPERAND_INDEX="0" TO_ADDRESS="0x2000" PRIMARY="y" />
+        <MEMORY_REFERENCE ADDRESS="0x168" OPERAND_INDEX="0" TO_ADDRESS="0x3DA0" PRIMARY="y" />
+        <MEMORY_REFERENCE ADDRESS="0x1A0" OPERAND_INDEX="0" TO_ADDRESS="0x3DB0" PRIMARY="y" />
+        <MEMORY_REFERENCE ADDRESS="0x1D8" OPERAND_INDEX="0" TO_ADDRESS="0x2C4" PRIMARY="y" />
+        <MEMORY_REFERENCE ADDRESS="0x210" OPERAND_INDEX="0" TO_ADDRESS="0x206C" PRIMARY="y" />
+        <MEMORY_REFERENCE ADDRESS="0x280" OPERAND_INDEX="0" TO_ADDRESS="0x3DA0" PRIMARY="y" />
+        <MEMORY_REFERENCE ADDRESS="0x3DA0" OPERAND_INDEX="0" TO_ADDRESS="0x1160" PRIMARY="y" />
+        <MEMORY_REFERENCE ADDRESS="0x3DA8" OPERAND_INDEX="0" TO_ADDRESS="0x1120" PRIMARY="y" />
+        <MEMORY_REFERENCE ADDRESS="0x3FA0" OPERAND_INDEX="0" TO_ADDRESS="0x3DB0" PRIMARY="y" />
+        <MEMORY_REFERENCE ADDRESS="0x3FB8" OPERAND_INDEX="0" TO_ADDRESS="0x4020" PRIMARY="y" />
+        <MEMORY_REFERENCE ADDRESS="0x3FC0" OPERAND_INDEX="0" TO_ADDRESS="0x4028" PRIMARY="y" />
+        <MEMORY_REFERENCE ADDRESS="0x3FC8" OPERAND_INDEX="0" TO_ADDRESS="0x4030" PRIMARY="y" />
+        <MEMORY_REFERENCE ADDRESS="0x3FD0" OPERAND_INDEX="0" TO_ADDRESS="0x4040" PRIMARY="y" />
+        <MEMORY_REFERENCE ADDRESS="0x3FD8" OPERAND_INDEX="0" TO_ADDRESS="0x4050" PRIMARY="y" />
+        <MEMORY_REFERENCE ADDRESS="0x3FE0" OPERAND_INDEX="0" TO_ADDRESS="0x4038" PRIMARY="y" />
+        <MEMORY_REFERENCE ADDRESS="0x3FE8" OPERAND_INDEX="0" TO_ADDRESS="0x4058" PRIMARY="y" />
+        <MEMORY_REFERENCE ADDRESS="0x3FF0" OPERAND_INDEX="0" TO_ADDRESS="0x4060" PRIMARY="y" />
+        <MEMORY_REFERENCE ADDRESS="0x3FF8" OPERAND_INDEX="0" TO_ADDRESS="0x4048" PRIMARY="y" />
+        <MEMORY_REFERENCE ADDRESS="0x4008" OPERAND_INDEX="0" TO_ADDRESS="0x4008" PRIMARY="y" />
+    </MARKUP>
+</PROGRAM>

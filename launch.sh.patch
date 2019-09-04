@@ -1,0 +1,14 @@
+--- support/launch.sh	2019-03-07 22:48:42.778493495 -0500
++++ support/launch.sh.new	2019-03-07 22:42:21.316671049 -0500
+@@ -124,10 +124,7 @@
+ 	VMARG_LIST+=" -Declipse.filelock.disable=true"
+ fi
+ 
+-# Set Max Heap Size if specified
+-if [ "${MAXMEM}" != "" ]; then
+-	VMARG_LIST+=" -Xmx${MAXMEM}"
+-fi
++VMARG_LIST+=" -XX:InitialRAMPercentage=20 -XX:MinRAMPercentage=20 -XX:MaxRAMPercentage=80"
+ 
+ BACKGROUND=false
+ 

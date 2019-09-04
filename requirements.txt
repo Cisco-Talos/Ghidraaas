@@ -1,0 +1,4 @@
+coloredlogs==10.0
+gunicorn==19.9.0
+Werkzeug==0.15.2
+Flask==1.0.2
