@@ -50,7 +50,7 @@ docker build -t ghidraaas .
 
 * Run *ghidraaas* docker
 ```
-docker run -p 8080:8080 -v /home/user/ghidra_projects:/opt/ghidra_projects -t ghidraaas
+docker run -p 8080:8080 -t ghidraaas
 ```
 
 * Test the APIs

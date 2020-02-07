@@ -39,11 +39,14 @@ RUN pip3 install -r /opt/requirements.txt
 # Create /opt/ghidraaas working folder
 RUN mkdir -p /opt/ghidraaas
 RUN chown ghidra:ghidra /opt/ghidraaas
+
+RUN mkdir -p /opt/ghidra_projects
+RUN chown ghidra:ghidra /opt/ghidra_projects
+
 USER ghidra
 WORKDIR /opt/ghidraaas
 
 ENV ghidra_home=/opt/ghidra
-VOLUME /opt/ghidra_projects
 
 COPY --chown=ghidra:ghidra flask_api.py flask_api.py
 COPY --chown=ghidra:ghidra ghidra_plugins /opt/ghidra_plugins/
