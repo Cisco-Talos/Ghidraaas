@@ -82,7 +82,7 @@ rm ghidra.zip
 
 * Launch the server
 ```
-gunicorn -w 2 -b 0.0.0.0:8080 flask_api:app
+gunicorn -w 2 -t 300 -b 0.0.0.0:8080 flask_api:app
 ```
 
 * Test the APIs
