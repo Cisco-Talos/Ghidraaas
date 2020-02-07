@@ -51,4 +51,4 @@ COPY --chown=ghidra:ghidra ghidra_plugins /opt/ghidra_plugins/
 RUN mkdir /opt/ghidraaas/config
 COPY --chown=ghidra:ghidra config/docker_config.json /opt/ghidraaas/config/config.json
 
-ENTRYPOINT gunicorn -w 2 -b 0.0.0.0:8080 flask_api:app
+ENTRYPOINT gunicorn -w 2 -t 300 -b 0.0.0.0:8080 flask_api:app
