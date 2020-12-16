@@ -3,8 +3,8 @@
 FROM openjdk:11-slim
 MAINTAINER anmarcel "anmarcel@cisco.com"
 
-ARG GHIDRA_VERSION=9.0.4_PUBLIC_20190516
-ARG GHIDRA_SHA256=a50d0cd475d9377332811eeae66e94bdc9e7d88e58477c527e9c6b78caec18bf
+ARG GHIDRA_VERSION=9.1.2_PUBLIC_20200212
+ARG GHIDRA_SHA256=ebe3fa4e1afd7d97650990b27777bb78bd0427e8e70c1d0ee042aeb52decac61
 
 RUN useradd -m ghidra && \
     mkdir -p /srv/repositories && \

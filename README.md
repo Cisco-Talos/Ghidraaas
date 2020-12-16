@@ -73,20 +73,19 @@ pip install -r requirements.txt
 
 * Download and unzip the latest Ghidra release
 ```
-wget -O ghidra.zip https://ghidra-sre.org/ghidra_9.0.4_PUBLIC_20190516.zip
+wget -O ghidra.zip https://ghidra-sre.org/ghidra_9.1.2_PUBLIC_20200212.zip
 unzip ghidra.zip
 rm ghidra.zip
 ```
 
-* Set the ghidra_9.x.x folder path in `GHIDRA_PATH` of [config.json](config/config.json)
+* Set the `ghidra_9.1.2_PUBLIC` folder path in `GHIDRA_PATH` of [config.json](config/config.json)
 
 * Launch the server
 ```
 gunicorn -w 2 -t 300 -b 0.0.0.0:8080 flask_api:app
 ```
 
-* Test the APIs
-Open another terminal and type:
+* Test the APIs. Open another terminal and type:
 ```
 cd tests
 python3 test.py
