@@ -45,6 +45,7 @@ def sample_analysis():
 def get_function_list():
     r = requests.get("%s/get_functions_list/%s" %
                      (URL, SHA256), timeout=300)
+    print(r.text)
     print("get_function_list status_code", r.status_code)
     if r.status_code == 200:
         return True
