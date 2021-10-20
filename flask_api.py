@@ -53,8 +53,7 @@ with open('config/config.json') as f_in:
 
 
 def cmd_post_plugin(sha256, plugin_name, args = None):
-    output_path = os.path.join(
-            GHIDRA_OUTPUT, sha256 + plugin_name + "output.json")
+    output_path = os.path.join(GHIDRA_OUTPUT, sha256 + plugin_name + "output.json")
 
     # assuming that plugins do not change the state of the binaries. Can be turned off later, if not needed
     already_analyzed = ret_file_if_exists(output_path) 
@@ -72,18 +71,19 @@ def cmd_post_plugin(sha256, plugin_name, args = None):
         if result:
             return result
         else:
-            log.info("{} plugin failure".format(plugin_name))
+            print("{} plugin failure".format(plugin_name))
             raise BadRequest("{} plugin failure".format(plugin_name))
     else:
+        print("Sample has not been analyzed")
         raise BadRequest("Sample has not been analyzed")
 
 def sub_cmd(command):
-    log.debug("Ghidra analysis started")
+    print("Ghidra analysis started")
     p = subprocess.Popen([GHIDRA_HEADLESS, GHIDRA_PROJECT] + command, 
         stdout=subprocess.PIPE, stderr=subprocess.STDOUT)
     p.wait()
     print(''.join(s.decode("utf-8") for s in list(p.stdout)))
-    log.debug("Ghidra analysis completed")
+    print("Ghidra analysis completed")
     return p.stdout
 
 #############################################
@@ -130,8 +130,11 @@ def server_init():
     # Check if needed folders is available
     for folder in [SAMPLES_DIR, IDA_SAMPLES_DIR, GHIDRA_PROJECT, GHIDRA_OUTPUT]:
         if not os.path.isdir(os.path.join('./', folder)):
-            log.info("%s folder created" % folder)
-            os.mkdir(folder)
+            try:
+                log.info("%s folder created" % folder)
+                os.mkdir(folder)
+            except FileExistsError as e:
+                print(e)
     # 400 MB limit
     app.config["MAX_CONTENT_LENGTH"] = 400 * 1024 * 1024
 
@@ -158,10 +161,12 @@ def analyze_sample():
     """
     try:
         if not request.files.get("sample"):
+            print("sample is required")
             raise BadRequest("sample is required")
 
         sample_content = request.files.get("sample").stream.read()
         if len(sample_content) == 0:
+            print("Empty file received")
             raise BadRequest("Empty file received")
 
         stream = request.files.get("sample").stream
@@ -173,9 +178,10 @@ def analyze_sample():
             f_out.write(stream.read())
 
         if not os.path.isfile(sample_path):
+            print("File saving failure")
             raise BadRequest("File saving failure")
 
-        log.debug("New sample saved (sha256: %s)" % sha256)
+        print("New sample saved (sha256: %s)" % sha256)
 
         # Check if the sample has been analyzed
         project_path = os.path.join(GHIDRA_PROJECT, sha256 + ".gpr")
@@ -183,13 +189,14 @@ def analyze_sample():
             # Import the sample in Ghidra and perform the analysis
             sub_cmd([sha256, '-import',sample_path])
         os.remove(sample_path)
-        log.debug("Sample removed")
-        return ("Analysis completed", 200)
+        print("Sample removed")
+        return ({"sha256": sha256, }, 200)
 
     except BadRequest:
         raise
 
     except Exception:
+        print("Sample analysis failed")
         raise BadRequest("Sample analysis failed")
 
 
@@ -276,9 +283,9 @@ def analysis_terminated(sha256):
         # Check if the sample has been analyzed
         if os.path.isfile(project_path) and os.path.isdir(project_folder_path):
             os.remove(project_path)
-            log.debug("Ghidra project .gpr removed")
+            print("Ghidra project .gpr removed")
             shutil.rmtree(project_folder_path)
-            log.debug("Ghidra project folder .rep removed")
+            print("Ghidra project folder .rep removed")
             return ("Analysis terminated", 200)
         else:
             raise BadRequest("Sample does not exist.")
@@ -330,7 +337,7 @@ def ida_plugin_checkin():
         if not os.path.isfile(binary_file_path):
             raise BadRequest("File saving failure")
 
-        log.debug("New binary file saved (filename: %s)" % filename)
+        print("New binary file saved (filename: %s)" % filename)
         return (json.dumps({
             "status": "ok"
         }), 200)
@@ -383,7 +390,7 @@ def ida_plugin_get_decompiled_function():
         if not os.path.isfile(xml_file_path):
             raise BadRequest("File saving failure")
 
-        log.debug("New xml file saved (filename: %s)" % filename)
+        print("New xml file saved (filename: %s)" % filename)
 
         b_filename = filename + ".bytes"
         if not os.path.isfile(os.path.join(IDA_SAMPLES_DIR, b_filename)):
@@ -409,12 +416,12 @@ def ida_plugin_get_decompiled_function():
                "ghidra_log.txt"]
 
         # Execute Ghidra plugin
-        log.debug("Ghidra analysis started")
+        print("Ghidra analysis started")
         p = subprocess.Popen(cmd, stdout=subprocess.PIPE,
                              stderr=subprocess.STDOUT)
         p.wait()
         print(''.join(s.decode("utf-8") for s in list(p.stdout)))
-        log.debug("Ghidra analysis completed")
+        print("Ghidra analysis completed")
 
         # Check if the JSON response is available
         response = None
@@ -425,12 +432,12 @@ def ida_plugin_get_decompiled_function():
         if response:
             try:
                 os.remove(xml_file_path)
-                log.debug("File %s removed", xml_file_path)
+                print("File %s removed", xml_file_path)
             except Exception:
                 pass
             try:
                 os.remove(output_path)
-                log.debug("File %s removed", output_path)
+                print("File %s removed", output_path)
             except Exception:
                 pass
             return (response, 200)
@@ -465,7 +472,7 @@ def ida_plugin_checkout():
         binary_file_path = os.path.join(IDA_SAMPLES_DIR, "%s.bytes" % filename)
         if os.path.isfile(binary_file_path):
             os.remove(binary_file_path)
-            log.debug("File %s removed", binary_file_path)
+            print("File %s removed", binary_file_path)
 
         return ("OK", 200)
 
@@ -493,5 +500,5 @@ def handle_error(e):
         return (traceback.format_exc(), 500)
 
 
-set_logger(True)
+#set_logger(True)
 server_init()
