@@ -60,10 +60,11 @@ def cmd_post_plugin(sha256, plugin_name, args = None):
     if already_analyzed:
         return already_analyzed
     #print(output_path)
-    project_path = os.path.join(GHIDRA_PROJECT, sha256 + ".gpr")
+    #project_path = os.path.join(GHIDRA_PROJECT, sha256 + ".gpr")
+    project_path = os.path.join(GHIDRA_PROJECT, "project.gpr")
     if os.path.isfile(project_path):
-        command = [sha256, "-process", sha256, "-noanalysis", "-scriptPath", GHIDRA_SCRIPT,"-postScript", plugin_name,  args, output_path, "-log", "ghidra_log.txt"] if args else \
-            [sha256, "-process", sha256, "-noanalysis", "-scriptPath", GHIDRA_SCRIPT,"-postScript", plugin_name, output_path, "-log", "ghidra_log.txt"]
+        command = ["project", "-process", sha256, "-noanalysis", "-scriptPath", GHIDRA_SCRIPT,"-postScript", plugin_name,  args, output_path, "-log", "ghidra_log.txt"] if args else \
+            ["project", "-process", sha256, "-noanalysis", "-scriptPath", GHIDRA_SCRIPT,"-postScript", plugin_name, output_path, "-log", "ghidra_log.txt"]
 
         sub_cmd(command)
         
@@ -79,6 +80,7 @@ def cmd_post_plugin(sha256, plugin_name, args = None):
 
 def sub_cmd(command):
     print("Ghidra analysis started")
+    print(command)
     p = subprocess.Popen([GHIDRA_HEADLESS, GHIDRA_PROJECT] + command, 
         stdout=subprocess.PIPE, stderr=subprocess.STDOUT)
     p.wait()
@@ -131,7 +133,8 @@ def server_init():
     for folder in [SAMPLES_DIR, IDA_SAMPLES_DIR, GHIDRA_PROJECT, GHIDRA_OUTPUT]:
         if not os.path.isdir(os.path.join('./', folder)):
             try:
-                log.info("%s folder created" % folder)
+                #log.info("%s folder created" % folder)
+                print("%s folder created" % folder)
                 os.mkdir(folder)
             except FileExistsError as e:
                 print(e)
@@ -182,12 +185,14 @@ def analyze_sample():
             raise BadRequest("File saving failure")
 
         print("New sample saved (sha256: %s)" % sha256)
-
+        '''
         # Check if the sample has been analyzed
         project_path = os.path.join(GHIDRA_PROJECT, sha256 + ".gpr")
         if not os.path.isfile(project_path):
             # Import the sample in Ghidra and perform the analysis
             sub_cmd([sha256, '-import',sample_path])
+        '''
+        sub_cmd(['project', '-import',sample_path])
         os.remove(sample_path)
         print("Sample removed")
         return ({"sha256": sha256, }, 200)
