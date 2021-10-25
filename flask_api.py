@@ -28,18 +28,21 @@ import shutil
 import subprocess
 import traceback
 
+
 from flask import Flask
 from flask import request
 
 from werkzeug.exceptions import BadRequest
 from werkzeug.exceptions import HTTPException
 
+import redis
+
 import coloredlogs
 import logging
 log = None
 
 app = Flask(__name__)
-
+r = None
 # Load configuration
 with open('config/config.json') as f_in:
     j = json.load(f_in)
@@ -50,6 +53,12 @@ with open('config/config.json') as f_in:
     GHIDRA_PROJECT = j['GHIDRA_PROJECT']
     GHIDRA_PATH = j['GHIDRA_PATH']
     GHIDRA_HEADLESS = os.path.join(GHIDRA_PATH, "support/analyzeHeadless")
+    try:
+        r = redis.Redis.from_url(j['REDIS_CONNECTION'], db=2, decode_responses=True)
+    except TypeError as e:
+
+        r = False
+        raise e
 
 
 def cmd_post_plugin(sha256, plugin_name, args = None):
@@ -124,6 +133,12 @@ def sha256_hash(stream):
         sha256_hash.update(byte_block)
     return sha256_hash.hexdigest()
 
+def save_to_db(h, blob):
+    r.hset(h, 'blob', base64.b64encode(blob))
+    return True
+
+def load_from_db(h):
+    return base64.b64decode(r.hget(h, 'blob'))
 
 def server_init():
     """
@@ -143,7 +158,33 @@ def server_init():
 
     return
 
+def save_file_from_request(request):
 
+    if not request.files.get("file"):
+        print("sample is required")
+        raise BadRequest("sample is required")
+
+    sample_content = request.files.get("file").stream.read()
+    if len(sample_content) == 0:
+        print("Empty file received")
+        raise BadRequest("Empty file received")
+
+    stream = request.files.get("file").stream
+    sha256 = sha256_hash(stream)
+
+    sample_path = os.path.join(SAMPLES_DIR, sha256)
+    stream.seek(0)
+    with open(sample_path, "wb") as f_out:
+        f_out.write(stream.read())
+    stream.seek(0)
+    r.hset(sha256, 'uploaded', 1)
+    if not os.path.isfile(sample_path):
+        print("File saving failure")
+        raise BadRequest("File saving failure")
+    r.hset(sha256, 'uploaded', 1)
+    r.hset(sha256, 'path', sample_path)
+    print("New sample saved (sha256: %s)" % sha256)
+    return sample_path, sha256
 #############################################
 #       GHIDRAAAS APIs                      #
 #############################################
@@ -156,53 +197,62 @@ def index():
     return ("Hi! This is Ghidraaas", 200)
 
 
-@app.route("/ghidra/api/analyze_sample/", methods=["POST"])
-def analyze_sample():
-    """
-    Upload a sample, save it on the file system,
-    and launch Ghidra analysis.
-    """
+
+
+@app.route("/ghidra/api/upload", methods = ['POST'])
+def upload():
+    sha256 = request.args.get('id')
+    if r and r.exists(sha256):
+        return ('File already uploaded', 200)
     try:
-        if not request.files.get("sample"):
-            print("sample is required")
-            raise BadRequest("sample is required")
+        path, sha256 = save_file_from_request(request)
+    except BadRequest as e:
+        raise e
+    
+@app.route("/ghidra/api/analyze")
+def analyze():
+    sha256 = request.args.get('id')
+    try:
+        return (r.hget(sha256, 'results'), 200)
+    except Exception as e:
+        print(e)
+        try:
+            initial = r.hget(sha256, 'initial')
+            try:
+                results = cmd_post_plugin(sha256, "FunctionsListA.py")
+                r.hset(sha256, 'results', results)
+                return (results, 200)
+            except BadRequest as e:
+                raise e
+        except Exception as e:
+            return ('File either not uploaded or no initial analysis were done', 404)
+    
 
-        sample_content = request.files.get("sample").stream.read()
-        if len(sample_content) == 0:
-            print("Empty file received")
-            raise BadRequest("Empty file received")
 
-        stream = request.files.get("sample").stream
-        sha256 = sha256_hash(stream)
+@app.route("/ghidra/api/analyze_sample/", methods=["GET"])
+def analyze_sample():
+    sha256 = request.args.get('id')
+    try:
+        return (r.hget(sha256, 'results'), 200)
+    except:
+        print('not analyzed')
+        try:
+            
+            sample_path = r.hget(sha256, path)
+            sub_cmd(['project', '-import',sample_path])
+            os.remove(sample_path)
+            if r:
+                r.hset(sha256, 'initial', '1')
 
-        sample_path = os.path.join(SAMPLES_DIR, sha256)
-        stream.seek(0)
-        with open(sample_path, "wb") as f_out:
-            f_out.write(stream.read())
+            print("Sample removed")
+            return ({"sha256": sha256, }, 200)
 
-        if not os.path.isfile(sample_path):
-            print("File saving failure")
-            raise BadRequest("File saving failure")
+        except BadRequest:
+            raise
 
-        print("New sample saved (sha256: %s)" % sha256)
-        '''
-        # Check if the sample has been analyzed
-        project_path = os.path.join(GHIDRA_PROJECT, sha256 + ".gpr")
-        if not os.path.isfile(project_path):
-            # Import the sample in Ghidra and perform the analysis
-            sub_cmd([sha256, '-import',sample_path])
-        '''
-        sub_cmd(['project', '-import',sample_path])
-        os.remove(sample_path)
-        print("Sample removed")
-        return ({"sha256": sha256, }, 200)
-
-    except BadRequest:
-        raise
-
-    except Exception:
-        print("Sample analysis failed")
-        raise BadRequest("Sample analysis failed")
+        except Exception:
+            print("Sample analysis failed")
+            raise BadRequest("Sample analysis failed")
 
 
 @app.route("/ghidra/api/get_functions_list_detailed/<string:sha256>", methods=["GET"])

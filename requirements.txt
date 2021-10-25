@@ -2,3 +2,4 @@ coloredlogs==10.0
 gunicorn==19.9.0
 Werkzeug==0.15.5
 Flask==1.0.2
+redis==3.5.3
