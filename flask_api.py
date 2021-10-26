@@ -27,7 +27,7 @@ import os
 import shutil
 import subprocess
 import traceback
-
+import sys
 
 from flask import Flask
 from flask import request
@@ -81,20 +81,20 @@ def cmd_post_plugin(sha256, plugin_name, args = None):
         if result:
             return result
         else:
-            print("{} plugin failure".format(plugin_name))
-            raise BadRequest("{} plugin failure".format(plugin_name))
+            print("{} plugin failure".format(plugin_name), file=sys.stderr)
+            return BadRequest("{} plugin failure".format(plugin_name))
     else:
-        print("Sample has not been analyzed")
-        raise BadRequest("Sample has not been analyzed")
+        print("Sample has not been analyzed", file=sys.stderr)
+        return BadRequest("Sample has not been analyzed")
 
 def sub_cmd(command):
-    print("Ghidra analysis started")
-    print(command)
+    print("Ghidra analysis started", file=sys.stderr)
+    print(command, file=sys.stderr)
     p = subprocess.Popen([GHIDRA_HEADLESS, GHIDRA_PROJECT] + command, 
         stdout=subprocess.PIPE, stderr=subprocess.STDOUT)
     p.wait()
-    print(''.join(s.decode("utf-8") for s in list(p.stdout)))
-    print("Ghidra analysis completed")
+    print(''.join(s.decode("utf-8") for s in list(p.stdout)), file=sys.stderr)
+    print("Ghidra analysis completed", file=sys.stderr)
     return p.stdout
 
 #############################################
@@ -105,7 +105,7 @@ def ret_file_if_exists(output_path):
     # Check if JSON response is available
     if os.path.isfile(output_path):
         with open(output_path) as f_in:
-            return (f_in.read(), 200)
+            return f_in.read()
 
 
 def set_logger(debug):
@@ -149,10 +149,10 @@ def server_init():
         if not os.path.isdir(os.path.join('./', folder)):
             try:
                 #log.info("%s folder created" % folder)
-                print("%s folder created" % folder)
+                print("%s folder created" % folder, file=sys.stderr)
                 os.mkdir(folder)
             except FileExistsError as e:
-                print(e)
+                print(e, file=sys.stderr)
     # 400 MB limit
     app.config["MAX_CONTENT_LENGTH"] = 400 * 1024 * 1024
 
@@ -161,12 +161,12 @@ def server_init():
 def save_file_from_request(request):
 
     if not request.files.get("file"):
-        print("sample is required")
+        print("sample is required", file=sys.stderr)
         raise BadRequest("sample is required")
 
     sample_content = request.files.get("file").stream.read()
     if len(sample_content) == 0:
-        print("Empty file received")
+        print("Empty file received", file=sys.stderr)
         raise BadRequest("Empty file received")
 
     stream = request.files.get("file").stream
@@ -179,11 +179,11 @@ def save_file_from_request(request):
     stream.seek(0)
     r.hset(sha256, 'uploaded', 1)
     if not os.path.isfile(sample_path):
-        print("File saving failure")
+        print("File saving failure", file=sys.stderr)
         raise BadRequest("File saving failure")
     r.hset(sha256, 'uploaded', 1)
     r.hset(sha256, 'path', sample_path)
-    print("New sample saved (sha256: %s)" % sha256)
+    print("New sample saved (sha256: %s)" % sha256, file=sys.stderr)
     return sample_path, sha256
 #############################################
 #       GHIDRAAAS APIs                      #
@@ -206,54 +206,57 @@ def upload():
         return ('File already uploaded', 200)
     try:
         path, sha256 = save_file_from_request(request)
+        return ('File uploaded!', 200)
     except BadRequest as e:
         raise e
     
 @app.route("/ghidra/api/analyze")
 def analyze():
     sha256 = request.args.get('id')
-    try:
-        return (r.hget(sha256, 'results'), 200)
-    except Exception as e:
-        print(e)
-        try:
-            initial = r.hget(sha256, 'initial')
-            try:
-                results = cmd_post_plugin(sha256, "FunctionsListA.py")
-                r.hset(sha256, 'results', results)
-                return (results, 200)
-            except BadRequest as e:
-                raise e
-        except Exception as e:
-            return ('File either not uploaded or no initial analysis were done', 404)
-    
+    results_id = 'FullAnalysis.py'
+    print(f'analysis...{sha256}', file=sys.stderr)
+    if r.exists(sha256, results_id):
+        results =  r.hget(sha256, results_id)
+        if results:
+            print(results, file=sys.stderr)
+            return (results, 200)
+    if r.hget(sha256,'initial') != '1':
+        return BadRequest('File either not uploaded or no initial analysis were done')
+    print('new analysis...', file=sys.stderr)
+    results = cmd_post_plugin(sha256, results_id)
+    print(results,file=sys.stderr)
+    if type(results) == BadRequest:
+        return results
+    r.hset(sha256, 'results', results)
+    return (results, 200)
 
 
 @app.route("/ghidra/api/analyze_sample/", methods=["GET"])
 def analyze_sample():
     sha256 = request.args.get('id')
+    if r.hget(sha256, 'initial') == '1':
+        print('Initial analysis already completed before', file=sys.stderr)
+        return ('Initial analysis already completed before', 200)
+
+    print('not analyzed', file=sys.stderr)
     try:
-        return (r.hget(sha256, 'results'), 200)
-    except:
-        print('not analyzed')
-        try:
-            
-            sample_path = r.hget(sha256, path)
-            sub_cmd(['project', '-import',sample_path])
-            os.remove(sample_path)
-            if r:
-                r.hset(sha256, 'initial', '1')
+        
+        sample_path = r.hget(sha256, 'path')
+        sub_cmd(['project', '-import',sample_path])
+        os.remove(sample_path)
+        if r:
+            r.hset(sha256, 'initial', '1')
 
-            print("Sample removed")
-            return ({"sha256": sha256, }, 200)
+        print("Sample removed", file=sys.stderr)
+        return ({"sha256": sha256, }, 200)
 
-        except BadRequest:
-            raise
+    except BadRequest as e:
+        return BadRequest(f"something goes wrong:{e}")
 
-        except Exception:
-            print("Sample analysis failed")
-            raise BadRequest("Sample analysis failed")
-
+    except Exception as e:
+        print(f"Sample analysis failed:{e}", file=sys.stderr)
+        raise BadRequest(f"Sample analysis failed: {e}")
+    return BadRequest(f"something goes wrong with analysis")
 
 @app.route("/ghidra/api/get_functions_list_detailed/<string:sha256>", methods=["GET"])
 def get_functions_list_detailed(sha256):
