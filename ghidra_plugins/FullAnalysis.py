@@ -15,15 +15,20 @@ try:
     # output_path of the json file (should terminate with ".json")
     output_path = args[0]
     symbols = list()
+    external = dict()
     sm = currentProgram.getSymbolTable()
     symb = sm.getExternalSymbols()
     c = 0
     for s in symb:
-        symbols.append(str(s))
+        namespace = s.getParentNamespace().getName()
+        if namespace not in external.keys():
+            external[namespace] = []
+        external[namespace].append(s.getName())
         c+=1
     # Create a dictionary of address - function names
     
-    response_dict['External Symbols'] = symbols
+    response_dict['External Symbols'] = external
+
     print("Found %d external symbols" % (c))
 
     with open(output_path, "w") as f_out:
