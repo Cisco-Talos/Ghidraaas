@@ -27,6 +27,7 @@ import os
 import shutil
 import subprocess
 import traceback
+import sys
 
 from flask import Flask
 from flask import request
@@ -34,14 +35,16 @@ from flask import request
 from werkzeug.exceptions import BadRequest
 from werkzeug.exceptions import HTTPException
 
+import redis
+
 import coloredlogs
 import logging
 log = None
 
 app = Flask(__name__)
-
+r = None
 # Load configuration
-with open("config/config.json") as f_in:
+with open('config/config.json') as f_in:
     j = json.load(f_in)
     SAMPLES_DIR = j['SAMPLES_DIR']
     IDA_SAMPLES_DIR = j['IDA_SAMPLES_DIR']
@@ -50,11 +53,60 @@ with open("config/config.json") as f_in:
     GHIDRA_PROJECT = j['GHIDRA_PROJECT']
     GHIDRA_PATH = j['GHIDRA_PATH']
     GHIDRA_HEADLESS = os.path.join(GHIDRA_PATH, "support/analyzeHeadless")
+    try:
+        r = redis.Redis.from_url(j['REDIS_CONNECTION'], db=2, decode_responses=True)
+    except TypeError as e:
 
+        r = False
+        raise e
+
+
+def cmd_post_plugin(sha256, plugin_name, args = None):
+    output_path = os.path.join(GHIDRA_OUTPUT, sha256 + plugin_name + "output.json")
+
+    # assuming that plugins do not change the state of the binaries. Can be turned off later, if not needed
+    already_analyzed = ret_file_if_exists(output_path) 
+    if already_analyzed:
+        return already_analyzed
+    #print(output_path)
+    #project_path = os.path.join(GHIDRA_PROJECT, sha256 + ".gpr")
+    project_path = os.path.join(GHIDRA_PROJECT, "project.gpr")
+    if os.path.isfile(project_path):
+        command = ["project", "-process", sha256, "-noanalysis", "-scriptPath", GHIDRA_SCRIPT,"-postScript", plugin_name,  args, output_path, "-log", "ghidra_log.txt"] if args else \
+            ["project", "-process", sha256, "-noanalysis", "-scriptPath", GHIDRA_SCRIPT,"-postScript", plugin_name, output_path, "-log", "ghidra_log.txt"]
+
+        sub_cmd(command)
+        
+        result = ret_file_if_exists(output_path)
+        if result:
+            return result
+        else:
+            print("{} plugin failure".format(plugin_name), file=sys.stderr)
+            return BadRequest("{} plugin failure".format(plugin_name))
+    else:
+        print("Sample has not been analyzed", file=sys.stderr)
+        return BadRequest("Sample has not been analyzed")
+
+def sub_cmd(command):
+    print("Ghidra analysis started", file=sys.stderr)
+    print(command, file=sys.stderr)
+    p = subprocess.Popen([GHIDRA_HEADLESS, GHIDRA_PROJECT] + command, 
+        stdout=subprocess.PIPE, stderr=subprocess.STDOUT)
+    p.wait()
+    print(''.join(s.decode("utf-8") for s in list(p.stdout)), file=sys.stderr)
+    print("Ghidra analysis completed", file=sys.stderr)
+    return p.stdout
 
 #############################################
 #       UTILS                               #
 #############################################
+
+def ret_file_if_exists(output_path):
+    # Check if JSON response is available
+    if os.path.isfile(output_path):
+        with open(output_path) as f_in:
+            return f_in.read()
+
 
 def set_logger(debug):
     """
@@ -81,37 +133,58 @@ def sha256_hash(stream):
         sha256_hash.update(byte_block)
     return sha256_hash.hexdigest()
 
+def save_to_db(h, blob):
+    r.hset(h, 'blob', base64.b64encode(blob))
+    return True
+
+def load_from_db(h):
+    return base64.b64decode(r.hget(h, 'blob'))
 
 def server_init():
     """
     Server initialization: flask configuration, logging, etc.
     """
-    # Check if SAMPLES_DIR folder is available
-    if not os.path.isdir(SAMPLES_DIR):
-        log.info("%s folder created" % SAMPLES_DIR)
-        os.mkdir(SAMPLES_DIR)
-
-    # Check if IDA_SAMPLES_DIR folder is available
-    if not os.path.isdir(IDA_SAMPLES_DIR):
-        log.info("%s folder created" % IDA_SAMPLES_DIR)
-        os.mkdir(IDA_SAMPLES_DIR)
-
-    # Check if GHIDRA_PROJECT folder is available
-    if not os.path.isdir(GHIDRA_PROJECT):
-        log.info("%s folder created" % GHIDRA_PROJECT)
-        os.mkdir(GHIDRA_PROJECT)
-
-    # Check if GHIDRA_OUTPUT folder exists
-    if not os.path.isdir(GHIDRA_OUTPUT):
-        log.info("%s folder created" % GHIDRA_OUTPUT)
-        os.mkdir(GHIDRA_OUTPUT)
-
+    # Check if needed folders is available
+    for folder in [SAMPLES_DIR, IDA_SAMPLES_DIR, GHIDRA_PROJECT, GHIDRA_OUTPUT]:
+        if not os.path.isdir(os.path.join('./', folder)):
+            try:
+                #log.info("%s folder created" % folder)
+                print("%s folder created" % folder, file=sys.stderr)
+                os.mkdir(folder)
+            except FileExistsError as e:
+                print(e, file=sys.stderr)
     # 400 MB limit
     app.config["MAX_CONTENT_LENGTH"] = 400 * 1024 * 1024
 
     return
 
+def save_file_from_request(request):
 
+    if not request.files.get("file"):
+        print("sample is required", file=sys.stderr)
+        raise BadRequest("sample is required")
+
+    sample_content = request.files.get("file").stream.read()
+    if len(sample_content) == 0:
+        print("Empty file received", file=sys.stderr)
+        raise BadRequest("Empty file received")
+
+    stream = request.files.get("file").stream
+    sha256 = sha256_hash(stream)
+
+    sample_path = os.path.join(SAMPLES_DIR, sha256)
+    stream.seek(0)
+    with open(sample_path, "wb") as f_out:
+        f_out.write(stream.read())
+    stream.seek(0)
+    r.hset(sha256, 'uploaded', 1)
+    if not os.path.isfile(sample_path):
+        print("File saving failure", file=sys.stderr)
+        raise BadRequest("File saving failure")
+    r.hset(sha256, 'uploaded', 1)
+    r.hset(sha256, 'path', sample_path)
+    print("New sample saved (sha256: %s)" % sha256, file=sys.stderr)
+    return sample_path, sha256
 #############################################
 #       GHIDRAAAS APIs                      #
 #############################################
@@ -124,103 +197,75 @@ def index():
     return ("Hi! This is Ghidraaas", 200)
 
 
-@app.route("/ghidra/api/analyze_sample/", methods=["POST"])
-def analyze_sample():
-    """
-    Upload a sample, save it on the file system,
-    and launch Ghidra analysis.
-    """
+
+
+@app.route("/ghidra/api/upload", methods = ['POST'])
+def upload():
+    sha256 = request.args.get('id')
+    if r and r.exists(sha256):
+        return ('File already uploaded', 200)
     try:
-        if not request.files.get("sample"):
-            raise BadRequest("sample is required")
+        path, sha256 = save_file_from_request(request)
+        return ('File uploaded!', 200)
+    except BadRequest as e:
+        raise e
+    
+@app.route("/ghidra/api/analyze")
+def analyze():
+    sha256 = request.args.get('id')
+    results_id = 'FullAnalysis.py'
+    print(f'analysis...{sha256}', file=sys.stderr)
+    if r.exists(sha256, results_id):
+        results =  r.hget(sha256, results_id)
+        if results:
+            print(results, file=sys.stderr)
+            return (results, 200)
+    if r.hget(sha256,'initial') != '1':
+        return BadRequest('File either not uploaded or no initial analysis were done')
+    print('new analysis...', file=sys.stderr)
+    results = cmd_post_plugin(sha256, results_id)
+    print(results,file=sys.stderr)
+    if type(results) == BadRequest:
+        return results
+    r.hset(sha256, 'results', results)
+    return (results, 200)
 
-        sample_content = request.files.get("sample").stream.read()
-        if len(sample_content) == 0:
-            raise BadRequest("Empty file received")
 
-        stream = request.files.get("sample").stream
-        sha256 = sha256_hash(stream)
+@app.route("/ghidra/api/analyze_sample/", methods=["GET"])
+def analyze_sample():
+    sha256 = request.args.get('id')
+    if r.hget(sha256, 'initial') == '1':
+        print('Initial analysis already completed before', file=sys.stderr)
+        return ('Initial analysis already completed before', 200)
 
-        sample_path = os.path.join(SAMPLES_DIR, sha256)
-        stream.seek(0)
-        with open(sample_path, "wb") as f_out:
-            f_out.write(stream.read())
-
-        if not os.path.isfile(sample_path):
-            raise BadRequest("File saving failure")
-
-        log.debug("New sample saved (sha256: %s)" % sha256)
-
-        # Check if the sample has been analyzed
-        project_path = os.path.join(GHIDRA_PROJECT, sha256 + ".gpr")
-        if not os.path.isfile(project_path):
-            log.debug("Ghidra analysis started")
-
-            # Import the sample in Ghidra and perform the analysis
-            command = [GHIDRA_HEADLESS,
-                       GHIDRA_PROJECT,
-                       sha256,
-                       "-import",
-                       sample_path]
-            p = subprocess.Popen(command, stdout=subprocess.PIPE,
-                                 stderr=subprocess.STDOUT)
-            p.wait()
-            print(''.join(s.decode("utf-8") for s in list(p.stdout)))
-            log.debug("Ghidra analysis completed")
-
+    print('not analyzed', file=sys.stderr)
+    try:
+        
+        sample_path = r.hget(sha256, 'path')
+        sub_cmd(['project', '-import',sample_path])
         os.remove(sample_path)
-        log.debug("Sample removed")
-        return ("Analysis completed", 200)
+        if r:
+            r.hset(sha256, 'initial', '1')
 
-    except BadRequest:
-        raise
+        print("Sample removed", file=sys.stderr)
+        return ({"sha256": sha256, }, 200)
 
-    except Exception:
-        raise BadRequest("Sample analysis failed")
+    except BadRequest as e:
+        return BadRequest(f"something goes wrong:{e}")
 
+    except Exception as e:
+        print(f"Sample analysis failed:{e}", file=sys.stderr)
+        raise BadRequest(f"Sample analysis failed: {e}")
+    return BadRequest(f"something goes wrong with analysis")
 
-@app.route("/ghidra/api/get_functions_list_detailed/<string:sha256>")
+@app.route("/ghidra/api/get_functions_list_detailed/<string:sha256>", methods=["GET"])
 def get_functions_list_detailed(sha256):
     """
     Given the sha256 of a sample, returns the list of functions.
-    If the sample has not been analyzed, returns an error.
+    If the sample has not been analyzed, returns an error."FunctionsListA.py",
     """
     try:
-        project_path = os.path.join(GHIDRA_PROJECT, sha256 + ".gpr")
-        # Check if the sample has been analyzed
-        if os.path.isfile(project_path):
-            output_path = os.path.join(
-                GHIDRA_OUTPUT, sha256 + "functions_list_a.json")
-
-            command = [GHIDRA_HEADLESS,
-                       GHIDRA_PROJECT,
-                       sha256,
-                       "-process",
-                       sha256,
-                       "-noanalysis",
-                       "-scriptPath",
-                       GHIDRA_SCRIPT,
-                       "-postScript",
-                       "FunctionsListA.py",
-                       output_path,
-                       "-log",
-                       "ghidra_log.txt"]
-            # Execute Ghidra plugin
-            log.debug("Ghidra analysis started")
-            p = subprocess.Popen(command, stdout=subprocess.PIPE,
-                                 stderr=subprocess.STDOUT)
-            p.wait()
-            print(''.join(s.decode("utf-8") for s in list(p.stdout)))
-            log.debug("Ghidra analysis completed")
-
-            # Check if JSON response is available
-            if os.path.isfile(output_path):
-                with open(output_path) as f_in:
-                    return (f_in.read(), 200)
-            else:
-                raise BadRequest("FunctionsList plugin failure")
-        else:
-            raise BadRequest("Sample has not been analyzed")
+        return cmd_post_plugin(sha256, "FunctionsListA.py")
 
     except BadRequest:
         raise
@@ -233,48 +278,16 @@ def get_functions_list_detailed(sha256):
 def get_functions_list(sha256):
     """
     Given the sha256 of a sample, returns the list of functions.
-    If the sample has not been analyzed, returns an error.
+    If the sample has not been analyzed, returns an error. "FunctionsList.py"
     """
     try:
-        project_path = os.path.join(GHIDRA_PROJECT, sha256 + ".gpr")
-        # Check if the sample has been analyzed
-        if os.path.isfile(project_path):
-            output_path = os.path.join(
-                GHIDRA_OUTPUT, sha256 + "functions_list.json")
-            command = [GHIDRA_HEADLESS,
-                       GHIDRA_PROJECT,
-                       sha256,
-                       "-process",
-                       sha256,
-                       "-noanalysis",
-                       "-scriptPath",
-                       GHIDRA_SCRIPT,
-                       "-postScript",
-                       "FunctionsList.py",
-                       output_path,
-                       "-log",
-                       "ghidra_log.txt"]
-            # Execute Ghidra plugin
-            log.debug("Ghidra analysis started")
-            p = subprocess.Popen(command, stdout=subprocess.PIPE,
-                                 stderr=subprocess.STDOUT)
-            p.wait()
-            print(''.join(s.decode("utf-8") for s in list(p.stdout)))
-            log.debug("Ghidra analysis completed")
-
-            # Check if JSON response is available
-            if os.path.isfile(output_path):
-                with open(output_path) as f_in:
-                    return (f_in.read(), 200)
-            else:
-                raise BadRequest("FunctionsList plugin failure")
-        else:
-            raise BadRequest("Sample has not been analyzed")
+        return cmd_post_plugin(sha256, "FunctionsList.py")
 
     except BadRequest:
         raise
 
-    except Exception:
+    except Exception as e:
+        raise e
         raise BadRequest("Sample analysis failed")
 
 
@@ -283,46 +296,31 @@ def get_decompiled_function(sha256, offset):
     """
     Given a sha256, and an offset, returns the decompiled code of the
     function. Returns an error if the sample has not been analyzed by Ghidra,
-    or if the offset does not correspond to a function
+    or if the offset does not correspond to a function "FunctionDecompile.py"
     """
     try:
-        project_path = os.path.join(GHIDRA_PROJECT, sha256 + ".gpr")
-        # Check if the sample has been analyzed
-        if os.path.isfile(project_path):
-            output_path = os.path.join(
-                GHIDRA_OUTPUT, sha256 + "function_decompiled.json")
-            # Call the DecompileFunction Ghidra plugin
-            command = [GHIDRA_HEADLESS,
-                       GHIDRA_PROJECT,
-                       sha256,
-                       "-process",
-                       sha256,
-                       "-noanalysis",
-                       "-scriptPath",
-                       GHIDRA_SCRIPT,
-                       "-postScript",
-                       "FunctionDecompile.py",
-                       offset,
-                       output_path,
-                       "-log",
-                       "ghidra_log.txt"]
-            # Execute Ghidra plugin
-            log.debug("Ghidra analysis started")
-            p = subprocess.Popen(command, stdout=subprocess.PIPE,
-                                 stderr=subprocess.STDOUT)
-            p.wait()
-            print(''.join(s.decode("utf-8") for s in list(p.stdout)))
-            log.debug("Ghidra analysis completed")
+        return cmd_post_plugin(sha256, "FunctionDecompile.py", offset)
 
-            # Check if the JSON response is available
-            if os.path.isfile(output_path):
-                with open(output_path) as f_in:
-                    return (f_in.read(), 200)
-            else:
-                raise BadRequest("FunctionDecompile plugin failure")
-        else:
-            raise BadRequest("Sample has not been analyzed")
+    except BadRequest:
+        raise
 
+    except Exception:
+        raise BadRequest("Sample analysis failed")
+
+@app.route("/ghidra/api/script/<string:sha256>/<string:script>")
+def get_script_result(sha256, script):
+    """
+    Given a sha256, and an offset, returns the decompiled code of the
+    function. Returns an error if the sample has not been analyzed by Ghidra,
+    or if the offset does not correspond to a function "FunctionDecompile.py"
+    """
+    try:
+        scripts =  os.listdir(GHIDRA_SCRIPT)
+        for s in scripts:
+            if os.path.splitext(s) == script:
+                args = request.args.get('args')
+                return cmd_post_plugin(sha256, s, args)
+        raise BadRequest("Script %s not found"%script)
     except BadRequest:
         raise
 
@@ -343,9 +341,9 @@ def analysis_terminated(sha256):
         # Check if the sample has been analyzed
         if os.path.isfile(project_path) and os.path.isdir(project_folder_path):
             os.remove(project_path)
-            log.debug("Ghidra project .gpr removed")
+            print("Ghidra project .gpr removed")
             shutil.rmtree(project_folder_path)
-            log.debug("Ghidra project folder .rep removed")
+            print("Ghidra project folder .rep removed")
             return ("Analysis terminated", 200)
         else:
             raise BadRequest("Sample does not exist.")
@@ -397,7 +395,7 @@ def ida_plugin_checkin():
         if not os.path.isfile(binary_file_path):
             raise BadRequest("File saving failure")
 
-        log.debug("New binary file saved (filename: %s)" % filename)
+        print("New binary file saved (filename: %s)" % filename)
         return (json.dumps({
             "status": "ok"
         }), 200)
@@ -450,7 +448,7 @@ def ida_plugin_get_decompiled_function():
         if not os.path.isfile(xml_file_path):
             raise BadRequest("File saving failure")
 
-        log.debug("New xml file saved (filename: %s)" % filename)
+        print("New xml file saved (filename: %s)" % filename)
 
         b_filename = filename + ".bytes"
         if not os.path.isfile(os.path.join(IDA_SAMPLES_DIR, b_filename)):
@@ -476,12 +474,12 @@ def ida_plugin_get_decompiled_function():
                "ghidra_log.txt"]
 
         # Execute Ghidra plugin
-        log.debug("Ghidra analysis started")
+        print("Ghidra analysis started")
         p = subprocess.Popen(cmd, stdout=subprocess.PIPE,
                              stderr=subprocess.STDOUT)
         p.wait()
         print(''.join(s.decode("utf-8") for s in list(p.stdout)))
-        log.debug("Ghidra analysis completed")
+        print("Ghidra analysis completed")
 
         # Check if the JSON response is available
         response = None
@@ -492,12 +490,12 @@ def ida_plugin_get_decompiled_function():
         if response:
             try:
                 os.remove(xml_file_path)
-                log.debug("File %s removed", xml_file_path)
+                print("File %s removed", xml_file_path)
             except Exception:
                 pass
             try:
                 os.remove(output_path)
-                log.debug("File %s removed", output_path)
+                print("File %s removed", output_path)
             except Exception:
                 pass
             return (response, 200)
@@ -532,7 +530,7 @@ def ida_plugin_checkout():
         binary_file_path = os.path.join(IDA_SAMPLES_DIR, "%s.bytes" % filename)
         if os.path.isfile(binary_file_path):
             os.remove(binary_file_path)
-            log.debug("File %s removed", binary_file_path)
+            print("File %s removed", binary_file_path)
 
         return ("OK", 200)
 
@@ -560,5 +558,5 @@ def handle_error(e):
         return (traceback.format_exc(), 500)
 
 
-set_logger(True)
+#set_logger(True)
 server_init()

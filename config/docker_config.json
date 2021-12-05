@@ -4,5 +4,6 @@
     "GHIDRA_OUTPUT": "output",
     "GHIDRA_PATH": "/opt/ghidra/",
     "GHIDRA_SCRIPT": "/opt/ghidra_plugins",
-    "GHIDRA_PROJECT": "/opt/ghidra_projects"
+    "GHIDRA_PROJECT": "/opt/ghidra_projects",
+    "REDIS_CONNECTION": "redis://localhost:6667"
 }
