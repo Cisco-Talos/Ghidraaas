@@ -1,4 +1,4 @@
 coloredlogs==10.0
 gunicorn==19.9.0
-Werkzeug==0.15.3
+Werkzeug==2.2.3
 Flask==1.0.2
